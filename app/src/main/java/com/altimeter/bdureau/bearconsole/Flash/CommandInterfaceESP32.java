@@ -368,7 +368,7 @@ public class CommandInterfaceESP32 {
     public void enterBootLoader() {
         // reset bootloader
 
-        mPhysicaloid.setDtrRts(false, true);
+        mPhysicaloid.setDtrRts(true, true);//dtr and rts seem flipped/*modified*/
         mUpCallback.onInfo("Entering bootloader mode"  + "\n");
 
         try {
@@ -376,7 +376,7 @@ public class CommandInterfaceESP32 {
         } catch (InterruptedException e) {
         }
 
-        mPhysicaloid.setDtrRts(true, false);
+        mPhysicaloid.setDtrRts(false, true);
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
