@@ -8,8 +8,11 @@ package com.altimeter.bdureau.bearconsole.Flash;
  **/
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 
@@ -36,6 +39,10 @@ import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
 import com.altimeter.bdureau.bearconsole.ShareHandler;
+import com.felhr.usbserial.UsbSerialDevice;
+import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import com.hoho.android.usbserial.driver.UsbSerialPort;
+import com.hoho.android.usbserial.driver.UsbSerialProber;
 import com.physicaloid.lib.Boards;
 import com.physicaloid.lib.Physicaloid;
 
@@ -47,12 +54,17 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.physicaloid.misc.Misc.toHexStr;
 
 
 public class FlashFirmware extends AppCompatActivity {
     Physicaloid mPhysicaloid;
+    UsbManager manager;
+    UsbSerialDriver driver;
+    UsbDeviceConnection connection;
+    UsbSerialPort port;
 
     boolean recorverFirmware = false;
     Boards mSelectedBoard;
@@ -125,7 +137,13 @@ public class FlashFirmware extends AppCompatActivity {
         imageAlti = (ImageView) findViewById(R.id.imageAlti);
 
 
-        mPhysicaloid = new Physicaloid(this);
+        //mPhysicaloid = new Physicaloid(this);
+        manager = (UsbManager) getSystemService((Context.USB_SERVICE));
+        List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
+        if(!availableDrivers.isEmpty()) {
+            driver = availableDrivers.get(0);
+            connection = manager.openDevice(driver.getDevice());
+        }
         mBoardList = new ArrayList<Boards>();
         for (Boards board : Boards.values()) {
             if (board.support > 0) {
@@ -134,11 +152,26 @@ public class FlashFirmware extends AppCompatActivity {
         }
 
         mSelectedBoard = mBoardList.get(0);
-        uartConfig = new UartConfig(115200, UartConfig.DATA_BITS8, UartConfig.STOP_BITS1, UartConfig.PARITY_NONE, false, false);
+        //uartConfig = new UartConfig(115200, UartConfig.DATA_BITS8, UartConfig.STOP_BITS1, UartConfig.PARITY_NONE, false, false);
 
         btFlash.setEnabled(true);
-        if (mPhysicaloid.open()) {
-            mPhysicaloid.setConfig(uartConfig);
+        if (connection != null) {
+            msg("We presumably have a connection");
+            port = driver.getPorts().get(0); // Most devices have just one port (port 0)
+            try {
+                port.open(connection);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                port.setParameters(115200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+                port.setDTR(false);
+                port.setRTS(false);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        //if (mPhysicaloid.open()) {
+        //    mPhysicaloid.setConfig(uartConfig);
 
         } else {
             //cannot open
@@ -392,9 +425,9 @@ public class FlashFirmware extends AppCompatActivity {
 
             String version = "";
 
-            FirmwareInfo firm = new FirmwareInfo(mPhysicaloid);
-            firm.open(38400);
-            version = firm.getFirmwarVersion();
+            //FirmwareInfo firm = new FirmwareInfo(mPhysicaloid);
+            //firm.open(38400);
+            version = "esp32";//firm.getFirmwarVersion();
 
             tvAppend(tvRead, getString(R.string.firmware_version_not_detected) + version + "\n");
 
@@ -607,7 +640,8 @@ public class FlashFirmware extends AppCompatActivity {
         CommandInterfaceESP32 cmd;
 
 
-        cmd = new CommandInterfaceESP32(UpCallback, mPhysicaloid);
+        //cmd = new CommandInterfaceESP32(UpCallback, mPhysicaloid);
+        cmd = new CommandInterfaceESP32(UpCallback, port);
 
         try {
             file1 = getAssets().open(fileName[0]);
@@ -822,9 +856,10 @@ public class FlashFirmware extends AppCompatActivity {
     }
 
     private void close() {
-        if (mPhysicaloid.close()) {
-
-        }
+        try {
+            port.close();
+            //if (mPhysicaloid.close()) {
+        } catch (IOException e){}
     }
 
     @Override
