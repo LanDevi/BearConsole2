@@ -17,11 +17,11 @@ import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
-import com.altimeter.bdureau.bearconsole.Flight.FlightData;
-import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
-import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
-import com.altimeter.bdureau.bearconsole.connection.BluetoothConnection;
-import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
+//import com.altimeter.bdureau.bearconsole.Flight.FlightData;
+//import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
+//import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
+//import com.altimeter.bdureau.bearconsole.connection.BluetoothConnection;
+//import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,8 +38,8 @@ public class ConsoleApplication extends Application {
     // Store number of flight
     public int NbrOfFlight = 0;
     public int currentFlightNbr = 0;
-    private FlightData MyFlight = null;
-    private AltiConfigData AltiCfg = null;
+    //private FlightData MyFlight = null;
+    //private AltiConfigData AltiCfg = null;
     private TestTrame testTrame = null;
 
     private static boolean DataReady = false;
@@ -48,12 +48,12 @@ public class ConsoleApplication extends Application {
 
     private double FEET_IN_METER = 1;
     private boolean exit = false;
-    private GlobalConfig AppConf = null;
+    //private GlobalConfig AppConf = null;
     private String address, moduleName;
     private String myTypeOfConnection = "bluetooth";// "USB";//"bluetooth";
 
-    private BluetoothConnection BTCon = null;
-    private UsbConnection UsbCon = null;
+    //private BluetoothConnection BTCon = null;
+    //private UsbConnection UsbCon = null;
 
     private Handler mHandler;
 
@@ -68,15 +68,15 @@ public class ConsoleApplication extends Application {
     public void onCreate() {
 
         super.onCreate();
-        AltiCfg = new AltiConfigData();
-        MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
+        //AltiCfg = new AltiConfigData();
+        //MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
         testTrame = new TestTrame();
-        AppConf = new GlobalConfig(this);
-        AppConf.ReadConfig();
-        BTCon = new BluetoothConnection();
-        UsbCon = new UsbConnection();
+        //AppConf = new GlobalConfig(this);
+        //AppConf.ReadConfig();
+        //BTCon = new BluetoothConnection();
+        //UsbCon = new UsbConnection();
 
-        myTypeOfConnection = AppConf.getConnectionTypeValue();
+        //myTypeOfConnection = AppConf.getConnectionTypeValue();
     }
 
     public void setConnectionType(String TypeOfConnection) {
@@ -105,55 +105,55 @@ public class ConsoleApplication extends Application {
 
     public InputStream getInputStream() {
         InputStream tmpIn = null;
-        if (myTypeOfConnection.equals("bluetooth")) {
-            tmpIn = BTCon.getInputStream();
-        } else {
-            tmpIn = UsbCon.getInputStream();
-        }
+        //if (myTypeOfConnection.equals("bluetooth")) {
+        //    tmpIn = BTCon.getInputStream();
+        //} else {
+        //    tmpIn = UsbCon.getInputStream();
+        //}
         return tmpIn;
     }
 
     public void setConnected(boolean Connected) {
-        if (myTypeOfConnection.equals("bluetooth")) {
-            BTCon.setBTConnected(Connected);
-        } else {
-            UsbCon.setUSBConnected(Connected);
-        }
+        //if (myTypeOfConnection.equals("bluetooth")) {
+        //    BTCon.setBTConnected(Connected);
+        //} else {
+        //    UsbCon.setUSBConnected(Connected);
+        //}
     }
 
-    public UsbConnection getUsbCon() {
-        return UsbCon;
-    }
+    //public UsbConnection getUsbCon() {
+    //    return UsbCon;
+    //}
 
     public boolean getConnected() {
         boolean ret = false;
-        if (myTypeOfConnection.equals("bluetooth")) {
-            ret = BTCon.getBTConnected();
-        } else {
-            ret = UsbCon.getUSBConnected();
-        }
+        //if (myTypeOfConnection.equals("bluetooth")) {
+        //    ret = BTCon.getBTConnected();
+        //} else {
+        //    ret = UsbCon.getUSBConnected();
+        //}
         return ret;
     }
 
-    public void setAltiConfigData(AltiConfigData configData) {
-        AltiCfg = configData;
-    }
+    //public void setAltiConfigData(AltiConfigData configData) {
+    //    AltiCfg = configData;
+    //}
 
-    public AltiConfigData getAltiConfigData() {
-        return AltiCfg;
-    }
+    //public AltiConfigData getAltiConfigData() {
+    //    return AltiCfg;
+    //}
 
     public TestTrame getTestTrame() {
         return testTrame;
     }
 
-    public void setFlightData(FlightData fData) {
-        MyFlight = fData;
-    }
+    //public void setFlightData(FlightData fData) {
+    //    MyFlight = fData;
+    //}
 
-    public FlightData getFlightData() {
-        return MyFlight;
-    }
+    //public FlightData getFlightData() {
+    //    return MyFlight;
+    //}
 
     public int getNbrOfFlight() {
         return NbrOfFlight;
@@ -164,138 +164,138 @@ public class ConsoleApplication extends Application {
     }
 
     // connect to the bluetooth adapter
-    public boolean connect() {
-        boolean state = false;
-        //appendLog("connect:");
-        if (myTypeOfConnection.equals("bluetooth")) {
-            if (ContextCompat.checkSelfPermission(ConsoleApplication.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    //getApplicationContext()
-
-                    //ActivityCompat.requestPermissions(this.getApplicationContext(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
-                    return false;
-                }
-            }
-            state = BTCon.connect(address, getApplicationContext());
-            setConnectionType("bluetooth");
-            if (!isConnectionValid()) {
-                Disconnect();
-                state = false;
-            }
-        }
-        return state;
-    }
+    //public boolean connect() {
+    //    boolean state = false;
+    //    //appendLog("connect:");
+    //    if (myTypeOfConnection.equals("bluetooth")) {
+    //        if (ContextCompat.checkSelfPermission(ConsoleApplication.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+    //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    //                //getApplicationContext()
+//
+    //                //ActivityCompat.requestPermissions(this.getApplicationContext(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+    //                return false;
+    //            }
+    //        }
+    //        state = BTCon.connect(address, getApplicationContext());
+    //        setConnectionType("bluetooth");
+    //        if (!isConnectionValid()) {
+    //            Disconnect();
+    //            state = false;
+    //        }
+    //    }
+    //    return state;
+    //}
 
     // connect to the USB
-    public boolean connect(UsbManager usbManager, UsbDevice device, int baudRate) {
-        boolean state = false;
-        if (myTypeOfConnection.equals("usb")) {
-            state = UsbCon.connect(usbManager, device, baudRate);
-            setConnectionType("usb");
+    //public boolean connect(UsbManager usbManager, UsbDevice device, int baudRate) {
+    //    boolean state = false;
+    //    if (myTypeOfConnection.equals("usb")) {
+    //        state = UsbCon.connect(usbManager, device, baudRate);
+    //        setConnectionType("usb");
+//
+    //        for (int i =0; i < 3; i++) {
+    //            if (isConnectionValid()) {
+    //                state = true;
+    //                break;
+    //            }
+    //        }
+    //        if(!state)
+    //            Disconnect();
+    //    }
+    //    return state;
+    //}
 
-            for (int i =0; i < 3; i++) {
-                if (isConnectionValid()) {
-                    state = true;
-                    break;
-                }
-            }
-            if(!state)
-                Disconnect();
-        }
-        return state;
-    }
 
+    //public boolean isConnectionValid() {
+    //    boolean valid = false;
+    //    //if(getConnected()) {
+//
+    //    setDataReady(false);
+    //   /* try {
+    //        Thread.sleep(2000);
+    //    } catch (InterruptedException e) {
+    //        e.printStackTrace();
+    //    }*/
+    //    //flush();
+    //    //clearInput();
+    //    //  send 2 commands to get rid off the module connection string on some modules
+    //    //write("h;".toString());
+//
+    //    //flush();
+    //    //clearInput();
+    //    //write("h;".toString());
+//
+    //    String myMessage = "";
+    //    long timeOut = 10000;
+    //    long startTime = System.currentTimeMillis();
+    //    long diffTime = 0;
+    //    //get the results
+    //    //wait for the result to come back
+    //    try {
+    //        /*while (getInputStream().available() <= 0 || diffTime < timeOut) {
+    //            diffTime = System.currentTimeMillis() - startTime;}*/
+    //        while (getInputStream().available() <= 0) ;
+    //    } catch (IOException e) {
+//
+    //    }
+//
+    //    myMessage = ReadResult(3000);
+//
+    //    if (myMessage.equals("OK")) {
+    //        lastReadResult = myMessage;
+    //        valid = true;
+    //    } else {
+    //        lastReadResult = myMessage;
+    //        valid = false;
+    //    }
+    //    //turn off telemetry
+    //    //flush();
+    //    //clearInput();
+    //    //write("y0;".toString());
+//
+    //    return valid;
+    //}
 
-    public boolean isConnectionValid() {
-        boolean valid = false;
-        //if(getConnected()) {
+    //public void Disconnect() {
+    //    if (myTypeOfConnection.equals("bluetooth")) {
+    //        BTCon.Disconnect();
+    //    } else {
+    //        UsbCon.Disconnect();
+    //    }
+    //}
 
-        setDataReady(false);
-       /* try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        flush();
-        clearInput();
-        //  send 2 commands to get rid off the module connection string on some modules
-        write("h;".toString());
+    //public void flush() {
+    //    if (myTypeOfConnection.equals("bluetooth")) {
+    //        BTCon.flush();
+    //    }
+    //}
 
-        flush();
-        clearInput();
-        write("h;".toString());
+    //public void write(String data) {
+    //    if (myTypeOfConnection.equals("bluetooth")) {
+    //        BTCon.write(data);
+    //    } else {
+    //        UsbCon.write(data);
+    //    }
+    //}
 
-        String myMessage = "";
-        long timeOut = 10000;
-        long startTime = System.currentTimeMillis();
-        long diffTime = 0;
-        //get the results
-        //wait for the result to come back
-        try {
-            /*while (getInputStream().available() <= 0 || diffTime < timeOut) {
-                diffTime = System.currentTimeMillis() - startTime;}*/
-            while (getInputStream().available() <= 0) ;
-        } catch (IOException e) {
+    //public void clearInput() {
+    //    if (myTypeOfConnection.equals("bluetooth")) {
+    //        BTCon.clearInput();
+    //    } else {
+    //        UsbCon.clearInput();
+    //    }
+    //}
 
-        }
-
-        myMessage = ReadResult(3000);
-
-        if (myMessage.equals("OK")) {
-            lastReadResult = myMessage;
-            valid = true;
-        } else {
-            lastReadResult = myMessage;
-            valid = false;
-        }
-        //turn off telemetry
-        flush();
-        clearInput();
-        write("y0;".toString());
-
-        return valid;
-    }
-
-    public void Disconnect() {
-        if (myTypeOfConnection.equals("bluetooth")) {
-            BTCon.Disconnect();
-        } else {
-            UsbCon.Disconnect();
-        }
-    }
-
-    public void flush() {
-        if (myTypeOfConnection.equals("bluetooth")) {
-            BTCon.flush();
-        }
-    }
-
-    public void write(String data) {
-        if (myTypeOfConnection.equals("bluetooth")) {
-            BTCon.write(data);
-        } else {
-            UsbCon.write(data);
-        }
-    }
-
-    public void clearInput() {
-        if (myTypeOfConnection.equals("bluetooth")) {
-            BTCon.clearInput();
-        } else {
-            UsbCon.clearInput();
-        }
-    }
-
-    public void initFlightData() {
-        MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
-        if (AppConf.getUnits()== 0) {
-            //meters
-            FEET_IN_METER = 1;
-        } else {
-            FEET_IN_METER = 3.28084;
-        }
-
-    }
+    //public void initFlightData() {
+    //    MyFlight = new FlightData(this, AltiCfg.getAltimeterName());
+    //    if (AppConf.getUnits()== 0) {
+    //        //meters
+    //        FEET_IN_METER = 1;
+    //    } else {
+    //        FEET_IN_METER = 3.28084;
+    //    }
+//
+    //}
 
 
     public void setExit(boolean b) {
@@ -330,7 +330,7 @@ public class ConsoleApplication extends Application {
 
     }
 
-    public String ReadResult(long timeout) {
+    /*public String ReadResult(long timeout) {
 
         // Reads in data while data is available
 
@@ -489,95 +489,95 @@ public class ConsoleApplication extends Application {
                                                 else
                                                     mHandler.obtainMessage(17, String.valueOf(0)).sendToTarget();
 
-                                            if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
-                                                // Value 18 contains the accel375 X
-                                                if (currentSentence.length > 18)
-                                                    if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(26, String.valueOf(currentSentence[18])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(26, String.valueOf(0)).sendToTarget();
-                                                // Value 19 contains the accel375 Y
-                                                if (currentSentence.length > 19)
-                                                    if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(27, String.valueOf(currentSentence[19])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(27, String.valueOf(0)).sendToTarget();
-                                                // Value 20 contains the accel375 Z
-                                                if (currentSentence.length > 20)
-                                                    if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(28, String.valueOf(currentSentence[20])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(28, String.valueOf(0)).sendToTarget();
-
-                                                // Value 21 contains the accel345 X
-                                                if (currentSentence.length > 21)
-                                                    if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(29, String.valueOf(currentSentence[21])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(29, String.valueOf(0)).sendToTarget();
-                                                // Value 22 contains the accel345 Y
-                                                if (currentSentence.length > 22)
-                                                    if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(30, String.valueOf(currentSentence[22])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(30, String.valueOf(0)).sendToTarget();
-                                                // Value 23 contains the accel345 Z
-                                                if (currentSentence.length > 23)
-                                                    if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(31, String.valueOf(currentSentence[23])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(31, String.valueOf(0)).sendToTarget();
-                                            }
-                                            if (AltiCfg.getAltimeterName().equals("AltiGPS")) {
-                                                // Value 18 contains the latitude
-                                                if (currentSentence.length > 18)
-                                                    if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
-                                                // Value 19 contains the longitude
-                                                if (currentSentence.length > 19)
-                                                    if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(19, String.valueOf(0)).sendToTarget();
-                                                // Value 20 contains the number of satellites
-                                                if (currentSentence.length > 20)
-                                                    if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(20, String.valueOf(currentSentence[20])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(20, String.valueOf(0)).sendToTarget();
-                                                // Value 21 contains hdop
-                                                if (currentSentence.length > 21)
-                                                    if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(21, String.valueOf(currentSentence[21])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(21, String.valueOf(0)).sendToTarget();
-                                                // Value 22 contains location age
-                                                if (currentSentence.length > 22)
-                                                    if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(22, String.valueOf(currentSentence[22])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(22, String.valueOf(0)).sendToTarget();
-                                                // Value 23 contains the GPS altitude
-                                                if (currentSentence.length > 23)
-                                                    if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(23, String.valueOf(currentSentence[23])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(23, String.valueOf(0)).sendToTarget();
-                                                // Value 24 contains the GPS Speed
-                                                if (currentSentence.length > 24)
-                                                    if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(24, String.valueOf(currentSentence[24])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(24, String.valueOf(0)).sendToTarget();
-                                                // Value 25 contains the time for sat acquisition
-                                                if (currentSentence.length > 25)
-                                                    if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
-                                                        mHandler.obtainMessage(25, String.valueOf(currentSentence[25])).sendToTarget();
-                                                    else
-                                                        mHandler.obtainMessage(25, String.valueOf(0)).sendToTarget();
-                                            }
+                                            //if (AltiCfg.getAltimeterName().equals("AltiMultiESP32_accel")) {
+                                            //    // Value 18 contains the accel375 X
+                                            //    if (currentSentence.length > 18)
+                                            //        if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(26, String.valueOf(currentSentence[18])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(26, String.valueOf(0)).sendToTarget();
+                                            //    // Value 19 contains the accel375 Y
+                                            //    if (currentSentence.length > 19)
+                                            //        if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(27, String.valueOf(currentSentence[19])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(27, String.valueOf(0)).sendToTarget();
+                                            //    // Value 20 contains the accel375 Z
+                                            //    if (currentSentence.length > 20)
+                                            //        if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(28, String.valueOf(currentSentence[20])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(28, String.valueOf(0)).sendToTarget();
+//
+                                            //    // Value 21 contains the accel345 X
+                                            //    if (currentSentence.length > 21)
+                                            //        if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(29, String.valueOf(currentSentence[21])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(29, String.valueOf(0)).sendToTarget();
+                                            //    // Value 22 contains the accel345 Y
+                                            //    if (currentSentence.length > 22)
+                                            //        if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(30, String.valueOf(currentSentence[22])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(30, String.valueOf(0)).sendToTarget();
+                                            //    // Value 23 contains the accel345 Z
+                                            //    if (currentSentence.length > 23)
+                                            //        if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(31, String.valueOf(currentSentence[23])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(31, String.valueOf(0)).sendToTarget();
+                                            //}
+                                            //if (AltiCfg.getAltimeterName().equals("AltiGPS")) {
+                                            //    // Value 18 contains the latitude
+                                            //    if (currentSentence.length > 18)
+                                            //        if (currentSentence[18].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(18, String.valueOf(currentSentence[18])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(18, String.valueOf(0)).sendToTarget();
+                                            //    // Value 19 contains the longitude
+                                            //    if (currentSentence.length > 19)
+                                            //        if (currentSentence[19].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(19, String.valueOf(currentSentence[19])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(19, String.valueOf(0)).sendToTarget();
+                                            //    // Value 20 contains the number of satellites
+                                            //    if (currentSentence.length > 20)
+                                            //        if (currentSentence[20].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(20, String.valueOf(currentSentence[20])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(20, String.valueOf(0)).sendToTarget();
+                                            //    // Value 21 contains hdop
+                                            //    if (currentSentence.length > 21)
+                                            //        if (currentSentence[21].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(21, String.valueOf(currentSentence[21])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(21, String.valueOf(0)).sendToTarget();
+                                            //    // Value 22 contains location age
+                                            //    if (currentSentence.length > 22)
+                                            //        if (currentSentence[22].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(22, String.valueOf(currentSentence[22])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(22, String.valueOf(0)).sendToTarget();
+                                            //    // Value 23 contains the GPS altitude
+                                            //    if (currentSentence.length > 23)
+                                            //        if (currentSentence[23].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(23, String.valueOf(currentSentence[23])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(23, String.valueOf(0)).sendToTarget();
+                                            //    // Value 24 contains the GPS Speed
+                                            //    if (currentSentence.length > 24)
+                                            //        if (currentSentence[24].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(24, String.valueOf(currentSentence[24])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(24, String.valueOf(0)).sendToTarget();
+                                            //    // Value 25 contains the time for sat acquisition
+                                            //    if (currentSentence.length > 25)
+                                            //        if (currentSentence[25].matches("\\d+(?:\\.\\d+)?"))
+                                            //            mHandler.obtainMessage(25, String.valueOf(currentSentence[25])).sendToTarget();
+                                            //        else
+                                            //            mHandler.obtainMessage(25, String.valueOf(0)).sendToTarget();
+                                            //}
                                         }
                                     }
                                     break;
@@ -1100,7 +1100,7 @@ public class ConsoleApplication extends Application {
             myMessage = myMessage + " " + "error:" + e.getMessage();
         }
         return myMessage;
-    }
+    }*/
 
     public void setDataReady(boolean value) {
         DataReady = value;
@@ -1111,32 +1111,32 @@ public class ConsoleApplication extends Application {
     }
 
 
-    public Configuration getAppLocal() {
+    //public Configuration getAppLocal() {
+//
+    //    Locale locale = null;
+    //    if (AppConf.getApplicationLanguage()==1) {
+    //        locale = Locale.FRENCH;//new Locale("fr_FR");
+    //    } else if (AppConf.getApplicationLanguage()==2) {
+    //        locale = Locale.ENGLISH;//new Locale("en_US");
+    //    } else {
+    //        locale = Locale.getDefault();
+    //    }
+//
+//
+    //    Configuration config = new Configuration();
+    //    config.locale = locale;
+    //    return config;
+//
+    //}
 
-        Locale locale = null;
-        if (AppConf.getApplicationLanguage()==1) {
-            locale = Locale.FRENCH;//new Locale("fr_FR");
-        } else if (AppConf.getApplicationLanguage()==2) {
-            locale = Locale.ENGLISH;//new Locale("en_US");
-        } else {
-            locale = Locale.getDefault();
-        }
 
+    //public GlobalConfig getAppConf() {
+    //    return AppConf;
+    //}
 
-        Configuration config = new Configuration();
-        config.locale = locale;
-        return config;
-
-    }
-
-
-    public GlobalConfig getAppConf() {
-        return AppConf;
-    }
-
-    public void setAppConf(GlobalConfig value) {
-        AppConf = value;
-    }
+    //public void setAppConf(GlobalConfig value) {
+    //    AppConf = value;
+    //}
 
     public class TestTrame {
 

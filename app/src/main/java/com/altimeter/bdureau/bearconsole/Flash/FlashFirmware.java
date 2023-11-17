@@ -38,8 +38,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
 import com.altimeter.bdureau.bearconsole.R;
 
-import com.altimeter.bdureau.bearconsole.ShareHandler;
-import com.felhr.usbserial.UsbSerialDevice;
+//import com.altimeter.bdureau.bearconsole.ShareHandler;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
@@ -880,10 +879,10 @@ public class FlashFirmware extends AppCompatActivity {
         int id = item.getItemId();
 
         //share screen
-        if (id == R.id.action_share) {
-            ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
-            return true;
-        }
+        //if (id == R.id.action_share) {
+        //    ShareHandler.takeScreenShot(findViewById(android.R.id.content).getRootView(), this);
+        //    return true;
+        //}
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(FlashFirmware.this, HelpActivity.class);

@@ -51,25 +51,25 @@ public class HelpActivity extends AppCompatActivity {
         Intent newint = getIntent();
         String FileName = newint.getStringExtra("help_file");
 
-        if(myBT.getAppConf().getApplicationLanguage()==0) {
-            //use phone language
-            try {
-                if (Locale.getDefault().getLanguage() == "fr")
-                    webView.loadUrl("file:///android_asset/help/" + FileName + "_fr.html");
-                else if (Locale.getDefault().getLanguage() == "es")
-                    webView.loadUrl("file:///android_asset/help/" + FileName + "_es.html");
-                else if (Locale.getDefault().getLanguage() == "it")
-                    webView.loadUrl("file:///android_asset/help/" + FileName + "_it.html");
-                else
-                    webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
-            } catch (Exception e) {
-                e.printStackTrace();
-                webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
-            }
-        } else {
+        //if(myBT.getAppConf().getApplicationLanguage()==0) {
+        //    //use phone language
+        //    try {
+        //        if (Locale.getDefault().getLanguage() == "fr")
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + "_fr.html");
+        //        else if (Locale.getDefault().getLanguage() == "es")
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + "_es.html");
+        //        else if (Locale.getDefault().getLanguage() == "it")
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + "_it.html");
+        //        else
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
+        //    } catch (Exception e) {
+        //        e.printStackTrace();
+        //        webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
+        //    }
+        //} else {
             //force it to English
             webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
-        }
+        //}
 
         btnDismiss = (Button) findViewById(R.id.butClose);
         btnDismiss.setOnClickListener(new View.OnClickListener() {
