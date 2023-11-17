@@ -16,6 +16,7 @@ package com.altimeter.bdureau.bearconsole.Flash;
  *  Also the reset() and enterBootLoader() do not currently work, you will need to enter the bootloader mode using the reset
  *  and boot buttons on the board
  **/
+import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.physicaloid.lib.Physicaloid;
 
 import java.io.ByteArrayOutputStream;
@@ -102,10 +103,15 @@ public class CommandInterfaceESP32 {
     }
     UploadSTM32CallBack mUpCallback;
     Physicaloid mPhysicaloid;
+    UsbSerialPort mPort;
 
     CommandInterfaceESP32(UploadSTM32CallBack UpCallback, Physicaloid mPhysi) {
         mUpCallback = UpCallback;
         mPhysicaloid = mPhysi;
+    }
+    CommandInterfaceESP32(UploadSTM32CallBack UpCallback, UsbSerialPort port) {
+        mUpCallback = UpCallback;
+        mPort = port;
     }
 
 
@@ -116,11 +122,15 @@ public class CommandInterfaceESP32 {
     public boolean initChip() {
         boolean syncSuccess = false;
         // initalize at 115200 bauds
-        mPhysicaloid.open();
-        mPhysicaloid.setBaudrate(115200);
+        try{
+            mPort.setParameters(115200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+        }catch (IOException e){}
 
-        mPhysicaloid.setParity(0); // 2 = parity even
-        mPhysicaloid.setStopBits(1);
+        //mPhysicaloid.open();
+        //mPhysicaloid.setBaudrate(115200);
+//
+        //mPhysicaloid.setParity(0); // 2 = parity even
+        //mPhysicaloid.setStopBits(1);
 
         drain();
 
@@ -138,11 +148,11 @@ public class CommandInterfaceESP32 {
             } else {
                 syncSuccess = true;
                 mUpCallback.onInfo("Sync Success!!!"  + "\n");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-
-                }
+                //try {
+                //    Thread.sleep(1000);
+                //} catch (InterruptedException e) {
+//
+                //}
                 break;
             }
         }
@@ -154,7 +164,10 @@ public class CommandInterfaceESP32 {
         sendCommand((byte) ESP_CHANGE_BAUDRATE, pkt, 0, 100);
 
         // second we change the comport baud rate
-        mPhysicaloid.setBaudrate(921600);
+        //mPhysicaloid.setBaudrate(1152000);
+        try {
+            mPort.setParameters(921600, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+        }catch (IOException e){}
         mUpCallback.onInfo("Changing baud rate to 921600"  + "\n");
         // let's wait
         try {
@@ -171,14 +184,18 @@ public class CommandInterfaceESP32 {
         int retval = 0;
         long endTime;
         long startTime = System.currentTimeMillis();
-        while(true) {
-            retval = mPhysicaloid.read(buf,1);
-            if(retval > 0) {
+        try{
+            mPort.purgeHwBuffers(false, true);
+        }catch (IOException e){}
 
-            }
-            endTime = System.currentTimeMillis();
-            if((endTime - startTime) > 1000) {break;}
-        }
+        //while(true) {
+        //    retval = mPhysicaloid.read(buf,1);
+        //    if(retval > 0) {
+//
+        //    }
+        //    endTime = System.currentTimeMillis();
+        //    if((endTime - startTime) > 1000) {break;}
+        //}
         return retval;
     }
 
@@ -233,8 +250,12 @@ public class CommandInterfaceESP32 {
         int ret = 0;
         retVal.retCode = 0;
         byte buf[] = slipEncode(data);
+        //mUpCallback.onInfo("buffer length: "+ buf.length);
+        //ret = mPhysicaloid.write(buf, buf.length);
+        try {
+            mPort.write(buf, 2000);
+        }catch (IOException e){}
 
-        ret = mPhysicaloid.write(buf, buf.length);
         try { Thread.sleep(5); } catch (InterruptedException e) {}
         
         int numRead = 0;
@@ -273,29 +294,35 @@ public class CommandInterfaceESP32 {
         long endTime;
         long startTime = System.currentTimeMillis();
         byte[] tmpbuf = new byte[length];
-
-        while (true) {
-            retval = mPhysicaloid.read(tmpbuf, length);
-            //            retval = mSerial.read(tmpbuf);
-            if (retval > 0) {
-                System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
-                totalRetval += retval;
-                startTime = System.currentTimeMillis();
-                //if (DEBUG_SHOW_RECV) {
-                //    Log.d(TAG, "recv(" + retval + ") : " + toHexStr(buf, totalRetval));
-                //}
-            }
-            
-            if (totalRetval >= 8) { 
-                break;
-            }
-
-            endTime = System.currentTimeMillis();
-            if ((endTime - startTime) > timeout) {
-                //Log.e(TAG, "recv timeout.");
-                break;
-            }
+        try {
+            retval = mPort.read(tmpbuf, (int) timeout);
+        } catch (IOException e){}
+        if(retval > 0){
+            System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
         }
+        //while (true) {
+        //
+        //    //retval = mPhysicaloid.read(tmpbuf, length);
+        //    //            retval = mSerial.read(tmpbuf);
+        //    if (retval > 0) {
+        //        System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
+        //        totalRetval += retval;
+        //        startTime = System.currentTimeMillis();
+        //        //if (DEBUG_SHOW_RECV) {
+        //        //    Log.d(TAG, "recv(" + retval + ") : " + toHexStr(buf, totalRetval));
+        //        //}
+        //    }
+        //
+        //    if (totalRetval >= 8) {
+        //        break;
+        //    }
+//
+        //    endTime = System.currentTimeMillis();
+        //    if ((endTime - startTime) > timeout) {
+        //        //Log.e(TAG, "recv timeout.");
+        //        break;
+        //    }
+        //}
         return retval;
     }
     /*private int _wait_for_ack( long timeout, byte readVal[]) {
@@ -355,10 +382,16 @@ public class CommandInterfaceESP32 {
      */
     public void reset() {
 
-        mPhysicaloid.setDtrRts(false, true);
+        //mPhysicaloid.setDtrRts(false, true);
+        try {
+            mPort.setRTS(true);
+            mPort.setDTR(false);
+        }catch (IOException e){}
         try { Thread.sleep(100); } catch (InterruptedException e) {}
-        mPhysicaloid.setDtrRts(true, false);
-
+        //mPhysicaloid.setDtrRts(true, false);
+        try {
+            mPort.setRTS(false);
+        }catch (IOException e){}
     }
 
     /*
@@ -368,20 +401,31 @@ public class CommandInterfaceESP32 {
     public void enterBootLoader() {
         // reset bootloader
 
-        mPhysicaloid.setDtrRts(false, true);
+        //mPhysicaloid.setDtrRts(true, true);//dtr and rts seem flipped/*modified*/
+        try{
+            mPort.setDTR(true);
+            mPort.setRTS(true);
+        }catch (IOException e){}
         mUpCallback.onInfo("Entering bootloader mode"  + "\n");
 
         try {
-            Thread.sleep(100);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
         }
 
-        mPhysicaloid.setDtrRts(true, false);
+        //mPhysicaloid.setDtrRts(false, true);
         try {
-            Thread.sleep(500);
+            mPort.setRTS(false);
+        } catch (IOException e){}
+
+        try {
+            Thread.sleep(50);
         } catch (InterruptedException e) {
         }
-        mPhysicaloid.setDtrRts(false, false);
+        //mPhysicaloid.setDtrRts(false, false);
+        try {
+            mPort.setDTR(false);
+        } catch (IOException e){}
     }
 
     /**
@@ -429,12 +473,16 @@ public class CommandInterfaceESP32 {
      *       given offset. If an ESP32 and md5 string is passed in, will also verify
      *       memory. ESP8266 does not have checksum memory verification in ROM
      */
-    public void flashData(byte binaryData[], int offset, int part) {
+    public void flashData(byte binaryData[], int offset, boolean preCompressed) {
         int filesize = binaryData.length;
-
+        byte image[];
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
-
-        byte image[] = compressBytes(binaryData);
+        if(!preCompressed) {
+            image = compressBytes(binaryData);
+        }
+        else{
+            image = binaryData;
+        }
         int blocks = flash_defl_begin(filesize, image.length, offset);
 
         int seq = 0;
@@ -500,6 +548,9 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
+        if(!IS_STUB){
+            pkt = _appendArray(pkt, _int_to_bytearray(0));//not stub so has to send extra 32-bit word
+        }
 
         // System.out.println("params:" +printHex(pkt));
         sendCommand((byte) ESP_FLASH_DEFL_BEGIN, pkt, 0, timeout);
@@ -610,7 +661,7 @@ public class CommandInterfaceESP32 {
 
             byte packet[] = _int_to_bytearray(reg);
 
-            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 0);
+            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 10);
             Struct myRet = new Struct();
 
             byte subArray[] = new byte[4];
