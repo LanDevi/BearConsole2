@@ -687,7 +687,10 @@ public class FlashFirmware extends AppCompatActivity {
         }
 
         dialogAppend("Starting ...");
-
+        byte file1Array[] = cmd.compressBytes(readFile(file1));
+        byte file2Array[] = cmd.compressBytes(readFile(file2));
+        byte file3Array[] = cmd.compressBytes(readFile(file3));
+        byte file4Array[] = cmd.compressBytes(readFile(file4));
 
         boolean ret = cmd.initChip();
         if (ret)
@@ -714,14 +717,14 @@ public class FlashFirmware extends AppCompatActivity {
 
             // Those are the files you want to flush
             dialogAppend("Flashing file 1 0xe000");
-            cmd.flashData(readFile(file1), 0xe000, 0);
+            cmd.flashData(file1Array, 0xe000, true);
             dialogAppend("Flashing file 2 0x1000");
-            cmd.flashData(readFile(file2), 0x1000, 0);
+            cmd.flashData(file2Array, 0x1000, true);
 
             dialogAppend("Flashing file 3 0x10000");
-            cmd.flashData(readFile(file3), 0x10000, 0);
+            cmd.flashData(file3Array, 0x10000, true);
             dialogAppend("Flashing file 4 0x8000");
-            cmd.flashData(readFile(file4), 0x8000, 0);
+            cmd.flashData(file4Array, 0x8000, true);
 
             // we have finish flashing lets reset the board so that the program can start
             cmd.reset();

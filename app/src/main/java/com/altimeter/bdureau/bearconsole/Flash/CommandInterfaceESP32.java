@@ -148,11 +148,11 @@ public class CommandInterfaceESP32 {
             } else {
                 syncSuccess = true;
                 mUpCallback.onInfo("Sync Success!!!"  + "\n");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-
-                }
+                //try {
+                //    Thread.sleep(1000);
+                //} catch (InterruptedException e) {
+//
+                //}
                 break;
             }
         }
@@ -409,7 +409,7 @@ public class CommandInterfaceESP32 {
         mUpCallback.onInfo("Entering bootloader mode"  + "\n");
 
         try {
-            Thread.sleep(100);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
         }
 
@@ -419,7 +419,7 @@ public class CommandInterfaceESP32 {
         } catch (IOException e){}
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
         }
         //mPhysicaloid.setDtrRts(false, false);
@@ -473,12 +473,16 @@ public class CommandInterfaceESP32 {
      *       given offset. If an ESP32 and md5 string is passed in, will also verify
      *       memory. ESP8266 does not have checksum memory verification in ROM
      */
-    public void flashData(byte binaryData[], int offset, int part) {
+    public void flashData(byte binaryData[], int offset, boolean preCompressed) {
         int filesize = binaryData.length;
-
+        byte image[];
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
-
-        byte image[] = compressBytes(binaryData);
+        if(!preCompressed) {
+            image = compressBytes(binaryData);
+        }
+        else{
+            image = binaryData;
+        }
         int blocks = flash_defl_begin(filesize, image.length, offset);
 
         int seq = 0;
@@ -544,6 +548,9 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
+        if(!IS_STUB){
+            pkt = _appendArray(pkt, _int_to_bytearray(0));//not stub so has to send extra 32-bit word
+        }
 
         // System.out.println("params:" +printHex(pkt));
         sendCommand((byte) ESP_FLASH_DEFL_BEGIN, pkt, 0, timeout);
@@ -654,7 +661,7 @@ public class CommandInterfaceESP32 {
 
             byte packet[] = _int_to_bytearray(reg);
 
-            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 0);
+            ret = sendCommand((byte) ESP_READ_REG, packet, 0, 10);
             Struct myRet = new Struct();
 
             byte subArray[] = new byte[4];
