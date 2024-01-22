@@ -719,9 +719,21 @@ public class FlashFirmware extends AppCompatActivity {
 
             // now that we have initialized the chip we can change the baud rate to 921600
             // first we tell the chip the new baud rate
+
+
+            if(cmd.isStub()) {
+                InputStream json_file = null;
+                try {
+                    json_file = getAssets().open(ASSET_FILE_NAME_ESP32_STUB);
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                }
+                String json_string = new String(readFile(json_file));
+                cmd.flashStub(json_string);
+            }
+            cmd.init();
             dialogAppend("Changing baudrate to 921600");
             cmd.changeBaudeRate();
-            cmd.init();
 
             // Those are the files you want to flush
             dialogAppend("Flashing file 1 0xe000");
@@ -735,6 +747,8 @@ public class FlashFirmware extends AppCompatActivity {
             cmd.flashData(file4Array, 0x8000, file4size);
 
             // we have finish flashing lets reset the board so that the program can start
+            cmd.flash_begin(0,0,0x400,0);
+            cmd.flash_defl_end(1);
             cmd.reset();
 
             dialogAppend("done ");

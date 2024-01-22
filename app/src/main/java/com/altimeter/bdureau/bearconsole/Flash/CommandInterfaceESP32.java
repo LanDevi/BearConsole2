@@ -21,8 +21,13 @@ import com.physicaloid.lib.Physicaloid;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.zip.Deflater;
-
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.JSONObject;
+import org.json.JSONException;
+import java.util.Base64;
 
 
 public class CommandInterfaceESP32 {
@@ -94,7 +99,9 @@ public class CommandInterfaceESP32 {
     private static final int MEM_END_ROM_TIMEOUT = 500;
     private static final int MD5_TIMEOUT_PER_MB = 8000;
 
-    private static boolean IS_STUB = false;
+    private static final boolean IS_STUB = true;
+
+    private static final int USED_FLASH_WRITE_SIZE = IS_STUB ? STUBLOADER_FLASH_WRITE_SIZE : FLASH_WRITE_SIZE;
 
     static class cmdRet {
         int retCode;
@@ -160,7 +167,12 @@ public class CommandInterfaceESP32 {
     }
 
     public void changeBaudeRate() {
-        byte pkt[] = _appendArray(_int_to_bytearray(921600),_int_to_bytearray(0));
+        byte pkt[] = _int_to_bytearray(921600);
+        if(IS_STUB)
+            pkt = _appendArray(pkt,_int_to_bytearray(115200));
+        else
+            pkt = _appendArray(pkt,_int_to_bytearray(0));
+
         sendCommand((byte) ESP_CHANGE_BAUDRATE, pkt, 0, 100);
 
         // second we change the comport baud rate
@@ -238,9 +250,9 @@ public class CommandInterfaceESP32 {
         data[2] = (byte) ((buffer.length) & 0xFF);
         data[3] = (byte) ((buffer.length >> 8) & 0xFF);
         data[4] = (byte) ((chk & 0xFF));
-        data[5] = (byte) ((chk >> 8) & 0xFF);
-        data[6] = (byte) ((chk >> 16) & 0xFF);
-        data[7] = (byte) ((chk >> 24) & 0xFF);
+        data[5] = (byte) (0);//(chk >> 8) & 0xFF
+        data[6] = (byte) (0);//(chk >> 16) & 0xFF
+        data[7] = (byte) (0);//(chk >> 24) & 0xFF
 
         for (i = 0; i < buffer.length; i++) {
             data[8 + i] = buffer[i];
@@ -442,6 +454,22 @@ public class CommandInterfaceESP32 {
         sendCommand((byte) ESP_FLASH_DEFL_DATA, pkt, _checksum(data), timeout);
 
     }
+    public void flash_defl_end(int user_code) {
+
+        byte pkt[] = _int_to_bytearray(user_code);
+
+        sendCommand((byte) ESP_FLASH_DEFL_END, pkt, 0, 3000);
+
+    }
+    public void flash_begin(int erase_size, int packets, int packet_size, int offset) {
+
+        byte pkt[] = _appendArray(_int_to_bytearray(erase_size),_int_to_bytearray(packets));
+        pkt = _appendArray(pkt,_int_to_bytearray(packet_size));
+        pkt = _appendArray(pkt,_int_to_bytearray(offset));
+
+        sendCommand((byte) ESP_FLASH_BEGIN, pkt, 0, 3000);
+
+    }
 
     public void init() {
 
@@ -503,25 +531,25 @@ public class CommandInterfaceESP32 {
 
             byte block[];
 
-            if (image.length - position >= FLASH_WRITE_SIZE) {
-                block = _subArray(image, position, FLASH_WRITE_SIZE);
+            if (image.length - position >= USED_FLASH_WRITE_SIZE) {
+                block = _subArray(image, position, USED_FLASH_WRITE_SIZE);
             } else {
                 // Pad the last block
                 block = _subArray(image, position, image.length - position);
 
                 // we have an incomplete block (ie: less than 1024) so let pad the missing block
                 // with 0xFF
-                /*byte tempArray[] = new byte[FLASH_WRITE_SIZE - block.length];
+                /*byte tempArray[] = new byte[USED_FLASH_WRITE_SIZE - block.length];
                 for (int i = 0; i < tempArray.length; i++) {
                     tempArray[i] = (byte) 0xFF;
                 }
                 block = _appendArray(block, tempArray);*/
             }
 
-            flash_defl_block(block, seq, 100);
+            flash_defl_block(block, seq, 500);
             seq += 1;
             written += block.length;
-            position += FLASH_WRITE_SIZE;
+            position += USED_FLASH_WRITE_SIZE;
         }
 
         long t2 = System.currentTimeMillis();
@@ -530,8 +558,8 @@ public class CommandInterfaceESP32 {
 
     private int flash_defl_begin(int size, int compsize, int offset) {
 
-        int num_blocks = (int) Math.floor((double) (compsize + FLASH_WRITE_SIZE - 1) / (double) FLASH_WRITE_SIZE);
-        int erase_blocks = (int) Math.floor((double) (size + FLASH_WRITE_SIZE - 1) / (double) FLASH_WRITE_SIZE);
+        int num_blocks = (int) Math.floor((double) (compsize + USED_FLASH_WRITE_SIZE - 1) / (double) USED_FLASH_WRITE_SIZE);
+        int erase_blocks = (int) Math.floor((double) (size + USED_FLASH_WRITE_SIZE - 1) / (double) USED_FLASH_WRITE_SIZE);
         // Start time
         long t1 = System.currentTimeMillis();
 
@@ -541,14 +569,14 @@ public class CommandInterfaceESP32 {
             write_size = size;
             timeout = 3000;
         } else {
-            write_size = erase_blocks * FLASH_WRITE_SIZE;
+            write_size = erase_blocks * USED_FLASH_WRITE_SIZE;
             timeout = timeout_per_mb(ERASE_REGION_TIMEOUT_PER_MB, write_size);
         }
 
         mUpCallback.onInfo("Compressed " + size + " bytes to " + compsize + "..."+ "\n");
 
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
-        pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
+        pkt = _appendArray(pkt, _int_to_bytearray(USED_FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
         if(!IS_STUB && false){//esp32-S3 specific
             pkt = _appendArray(pkt, _int_to_bytearray(0));//not stub so has to send extra 32-bit word
@@ -744,4 +772,109 @@ public class CommandInterfaceESP32 {
         byte[] compressedData = bos.toByteArray();
         return compressedData;
     }
+
+    /*stub upload code*/
+    public boolean isStub(){
+        return IS_STUB;
+    }
+    public void flashStub(String jsonPath){//byte binaryData[], int offset, boolean preCompressed) {
+        //int filesize = binaryData.length;
+        //byte image[];
+        mUpCallback.onInfo("\nUploading stub...");
+
+        //get stub file
+        StubFlasher stub = new StubFlasher(jsonPath);
+        //for stub text and stub data mem start and mem data
+        sendFlasherFile(stub.text, stub.text_start);
+        sendFlasherFile(stub.data, stub.data_start);
+
+        mUpCallback.onInfo("\nRunning stub...");
+        mem_finish((stub.entry));
+
+        //mem start needs total size, number of packets, data size per packet, offset
+        //total size is size of text, data field.
+        //number of packets is total size over packets rounded up
+        //data size per packet is esp_ram_block
+        //offset is text,data start value
+
+
+    }
+
+    private void sendFlasherFile(byte[] file, int offs) {
+        if (file != null) {
+
+            int length = file.length;
+            int blocks = (length + ESP_RAM_BLOCK - 1) / ESP_RAM_BLOCK;
+
+            mem_begin(length, blocks, ESP_RAM_BLOCK, offs);
+
+            for (int seq = 0; seq < blocks; seq++) {
+                int from_offs = seq * ESP_RAM_BLOCK;
+                int to_offs = from_offs + ESP_RAM_BLOCK;
+                byte[] data = null;
+                if(to_offs < length)
+                    data = Arrays.copyOfRange(file, from_offs, to_offs);
+                else
+                    data = Arrays.copyOfRange(file, from_offs, length);
+                mem_data(data, seq);
+            }
+        }
+        return;
+    }
+
+    private void mem_begin(int size, int blocks, int block_size, int offset) {
+        byte pkt[] = _appendArray(_int_to_bytearray(size), _int_to_bytearray(blocks));
+        pkt = _appendArray(pkt, _int_to_bytearray(block_size));
+        pkt = _appendArray(pkt, _int_to_bytearray(offset));
+
+        // System.out.println("params:" +printHex(pkt));
+        sendCommand((byte) ESP_MEM_BEGIN, pkt, 0, 3000);
+        return;
+    }
+    private void mem_data(byte[] data, int sequenceNumber) {
+        int data_size = data.length;
+
+        byte pkt[] = _appendArray(_int_to_bytearray(data_size), _int_to_bytearray(sequenceNumber));
+        pkt = _appendArray(pkt, _int_to_bytearray(0));
+        pkt = _appendArray(pkt, _int_to_bytearray(0));
+        pkt = _appendArray(pkt, data);
+
+        // System.out.println("params:" +printHex(pkt));
+        sendCommand((byte) ESP_MEM_DATA, pkt, _checksum(data), 3000);
+        return;
+    }
+    private void mem_finish(int entrypoint){
+        byte pkt[] = _appendArray(_int_to_bytearray((entrypoint == 0) ? 1 : 0), _int_to_bytearray(entrypoint));
+
+        // System.out.println("params:" +printHex(pkt));
+        sendCommand((byte) ESP_MEM_END, pkt, 0, 3000);
+    }
+    public class StubFlasher {
+        private byte[] text;
+        private int text_start;
+        private int entry;
+        private byte[] data;
+        private int data_start;
+        private int bss_start;
+
+        public StubFlasher(String json_string) {
+            //JSONObject parser = new JSONObject();
+
+            try {
+                JSONObject stub = new JSONObject(json_string);
+                byte[] textString = ((String) stub.get("text")).getBytes();
+                this.text = Base64.getDecoder().decode(textString);
+                this.text_start = (int) stub.get("text_start");
+                this.entry = (int) stub.get("entry");
+                byte[] dataString = ((String) stub.get("data")).getBytes();
+                this.data = Base64.getDecoder().decode(dataString);
+                this.data_start = (int) stub.get("data_start");
+                this.bss_start = (int) stub.get("bss_start");//
+            } catch (JSONException e) {
+                //e.printStackTrace();
+            }
+        }
+    }
+
+
 }
