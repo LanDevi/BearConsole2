@@ -268,7 +268,7 @@ public class CommandInterfaceESP32 {
             mPort.write(buf, 2000);
         }catch (IOException e){}
 
-        try { Thread.sleep(5); } catch (InterruptedException e) {}
+        //try { Thread.sleep(5); } catch (InterruptedException e) {}
         
         int numRead = 0;
         
@@ -305,13 +305,13 @@ public class CommandInterfaceESP32 {
         int totalRetval = 0;
         long endTime;
         long startTime = System.currentTimeMillis();
-        byte[] tmpbuf = new byte[length];
+        //byte[] tmpbuf = new byte[length];
         try {
-            retval = mPort.read(tmpbuf, (int) timeout);
+            retval = mPort.read(buf, (int) timeout);
         } catch (IOException e){}
-        if(retval > 0){
-            System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
-        }
+        //if(retval > 0){
+        //    System.arraycopy(tmpbuf, 0, buf, totalRetval, retval);
+        //}
         //while (true) {
         //
         //    //retval = mPhysicaloid.read(tmpbuf, length);
@@ -369,23 +369,36 @@ public class CommandInterfaceESP32 {
      * This will do a SLIP encode
      */
     public byte[] slipEncode(byte buffer[]) {
-        byte encoded[] = new byte[] {(byte) (0xC0)};
+        byte encoded[] = new byte[buffer.length * 2 + 2];//longest the array can ever be theoretically
+        int encodedNextIndex = 0;
+        encoded[encodedNextIndex] = (byte) (0xC0);
+        encodedNextIndex++;
 
+        int lastEncoded = 0;
         for (int x = 0; x < buffer.length; x++) {
-            if (buffer[x] == (byte) (0xC0)) {
-                encoded = _appendArray(encoded, new byte[] {(byte) (0xDB)});
-                encoded = _appendArray(encoded, new byte[] {(byte) (0xDC)});
+            if(buffer[x] == (byte) 0xC0 || buffer[x] == (byte) 0xDB){
+                System.arraycopy(buffer, lastEncoded, encoded, encodedNextIndex, x - lastEncoded);
+                encodedNextIndex = encodedNextIndex + (x-lastEncoded);
+                lastEncoded = x;
 
-            } else if (buffer[x] == (byte) (0xDB)) {
-                encoded = _appendArray(encoded, new byte[] {(byte) (0xDB)});
-                encoded = _appendArray(encoded, new byte[] {(byte) (0xDD)});
-            } else {
-                encoded = _appendArray(encoded,new byte[] {buffer[x]});
+                encoded[encodedNextIndex] = (byte) (0xDB);
+                encodedNextIndex++;
+                if(buffer[x]== (byte) (0xC0))
+                    encoded[encodedNextIndex] = (byte) (0xDC);
+                else
+                    encoded[encodedNextIndex] = (byte) (0xDD);
+                encodedNextIndex++;
+                lastEncoded++;
             }
         }
-        encoded = _appendArray(encoded,new byte[] {(byte) (0xC0)});
-
-        return encoded;
+        if(lastEncoded < buffer.length){
+            System.arraycopy(buffer, lastEncoded, encoded, encodedNextIndex, buffer.length - lastEncoded);
+            encodedNextIndex = encodedNextIndex + (buffer.length - lastEncoded);
+        }
+        encoded[encodedNextIndex] = (byte) (0xC0);
+        encodedNextIndex++;
+        byte[] returnArray = Arrays.copyOf(encoded, encodedNextIndex);
+        return returnArray;
     }
 
     /*
