@@ -564,9 +564,16 @@ public class CommandInterfaceESP32 {
             written += block.length;
             position += USED_FLASH_WRITE_SIZE;
         }
-
+        //get md5 for debug
+        //flash_md5(offset, filesize);
         long t2 = System.currentTimeMillis();
         mUpCallback.onInfo("Took " + (t2 - t1) + "ms to write " + filesize + " bytes" + "\n");
+    }
+    private void flash_md5(int address, int size){
+        byte pkt[] = _appendArray(_int_to_bytearray(address), _int_to_bytearray(size));
+        pkt = _appendArray(pkt, _int_to_bytearray(0));
+        pkt = _appendArray(pkt, _int_to_bytearray(0));
+        sendCommand((byte) ESP_SPI_FLASH_MD5, pkt, 0, 3000);
     }
 
     private int flash_defl_begin(int size, int compsize, int offset) {
