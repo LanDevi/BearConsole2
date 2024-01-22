@@ -473,15 +473,17 @@ public class CommandInterfaceESP32 {
      *       given offset. If an ESP32 and md5 string is passed in, will also verify
      *       memory. ESP8266 does not have checksum memory verification in ROM
      */
-    public void flashData(byte binaryData[], int offset, boolean preCompressed) {
-        int filesize = binaryData.length;
+    public void flashData(byte binaryData[], int offset, int preCompressed) {
+        int filesize = 0;
         byte image[];
         mUpCallback.onInfo("\nWriting data with filesize: " + filesize);
-        if(!preCompressed) {
+        if(preCompressed == 0) {
+            filesize = binaryData.length;
             image = compressBytes(binaryData);
         }
         else{
             image = binaryData;
+            filesize = preCompressed;
         }
         int blocks = flash_defl_begin(filesize, image.length, offset);
 
@@ -548,7 +550,7 @@ public class CommandInterfaceESP32 {
         byte pkt[] = _appendArray(_int_to_bytearray(write_size), _int_to_bytearray(num_blocks));
         pkt = _appendArray(pkt, _int_to_bytearray(FLASH_WRITE_SIZE));
         pkt = _appendArray(pkt, _int_to_bytearray(offset));
-        if(!IS_STUB){
+        if(!IS_STUB && false){//esp32-S3 specific
             pkt = _appendArray(pkt, _int_to_bytearray(0));//not stub so has to send extra 32-bit word
         }
 
