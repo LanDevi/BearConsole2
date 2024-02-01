@@ -320,20 +320,17 @@ public class FlashFirmware extends AppCompatActivity {
     private long DownloadFile(DownloadManager manager, String fileURL, int filenumber) {
         Uri uri = Uri.parse(fileURL);
         String fileName = fileURL.substring(fileURL.lastIndexOf('/') + 1);
-        if(fileName.charAt(0) != filenumber && filenumber != 0) {
-            DownloadManager.Request request = new DownloadManager.Request(uri);
-            request.setTitle(fileName);
-            request.setDestinationInExternalPublicDir(DOWNLOAD_STANDARD_LOCATION, DOWNLOAD_STANDARD_FOLDER + filenumber + fileName);
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-            return manager.enqueue(request);
-        }
-        else{
-            DownloadManager.Request request = new DownloadManager.Request(uri);
-            request.setTitle(fileName);
-            request.setDestinationInExternalPublicDir(DOWNLOAD_STANDARD_LOCATION, DOWNLOAD_STANDARD_FOLDER + fileName);
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-            return manager.enqueue(request);
-        }
+        String subPath;
+        if(fileName.charAt(0) != filenumber && filenumber != 0)
+            subPath = DOWNLOAD_STANDARD_FOLDER + filenumber + fileName;
+        else
+            subPath = DOWNLOAD_STANDARD_FOLDER + fileName;
+
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setTitle(fileName);
+        request.setDestinationInExternalPublicDir(DOWNLOAD_STANDARD_LOCATION, subPath);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        return manager.enqueue(request);
     }
     private void clearDownloadDirectory(String dir){
         File directory = new File(dir);
