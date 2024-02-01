@@ -337,6 +337,36 @@ public class CommandInterfaceESP32 {
         //}
         return retval;
     }
+
+    public int recieveDebug(byte[] buf, int length, long timeout){
+        byte[] receiveBuffer = new byte[512];
+        int returnLength = recv(buf, length, timeout);
+        //slipDecode(receiveBuffer, buf);
+        //int dataLength = slipDecoded[2] + (slipDecoded[3] << 8);
+
+
+        return returnLength;
+    }
+    public void slipDecode(byte encodedBuffer[], byte decoded[]) {
+        //byte decoded[] = new byte[] {};
+
+        for (int x = 1; x < encodedBuffer.length; x++) {
+            if(encodedBuffer[x] == (byte) (0xC0)) {
+                ;//end of packet found
+            }
+            else if (encodedBuffer[x] == (byte) (0xDB)) {
+                if(encodedBuffer[x+1] == (byte) (0xDC))
+                    decoded = _appendArray(decoded, new byte[] {(byte) (0xDB)});
+                if(encodedBuffer[x+1] == (byte) (0xDD))
+                    decoded = _appendArray(decoded, new byte[] {(byte) (0xDC)});
+            }  else {
+                decoded = _appendArray(decoded,new byte[] {encodedBuffer[x]});
+            }
+        }
+
+        //return decoded;
+        return;
+    }
     /*private int _wait_for_ack( long timeout, byte readVal[]) {
         long stop = System.currentTimeMillis() + timeout;
         byte got[] =new byte[1];

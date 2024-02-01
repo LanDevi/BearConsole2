@@ -46,6 +46,7 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 //import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
 //import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
 //import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
+import com.altimeter.bdureau.bearconsole.Flash.TerminalApplication;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,10 +62,10 @@ public class MainScreenActivity extends AppCompatActivity {
     public String TAG = "MainScreenActivity";
     String address = null;
     //CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    CardView btnTelemetry, btnStatus, btnFlashFirmware, btnTrack, btnInfo;
+    CardView btnTelemetry, btnTerminal, btnFlashFirmware, btnTrack, btnInfo, btnTest;
 
     ImageView image_settings, image_flights, image_telemetry, image_continuity, image_reset,
-            image_status, image_track, image_flash, image_info, image_connect;
+            image_terminal, image_track, image_flash, image_info, image_connect;
     TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
             text_status, text_track, text_flash, text_info, text_connect;
 
@@ -142,13 +143,14 @@ public class MainScreenActivity extends AppCompatActivity {
         //btnAltiSettings = (CardView) findViewById(R.id.settings_card);
         //btnReadFlights = (CardView) findViewById(R.id.flights_card);
         //btnTelemetry = (CardView) findViewById(R.id.telemetry_card);
-        btnStatus = (CardView) findViewById(R.id.status_card);
+        btnTerminal = (CardView) findViewById(R.id.teminal_card);
         btnFlashFirmware = (CardView) findViewById(R.id.flash_card);
         //btnConnectDisconnect = (CardView) findViewById(R.id.connect_card);
         //btnContinuityOnOff = (CardView) findViewById(R.id.continuity_card);
         //btnReset = (CardView) findViewById(R.id.reset_card);
         //btnTrack = (CardView) findViewById(R.id.track_card);
         btnInfo = (CardView) findViewById(R.id.info_card);
+        btnTest = (CardView) findViewById(R.id.test_card);
 
         // images
         //image_settings = (ImageView) findViewById(R.id.image_settings);
@@ -156,7 +158,7 @@ public class MainScreenActivity extends AppCompatActivity {
         //image_telemetry = (ImageView) findViewById(R.id.image_telemetry);
         //image_continuity = (ImageView) findViewById(R.id.image_continuity);
         //image_reset = (ImageView) findViewById(R.id.image_reset);
-        image_status = (ImageView) findViewById(R.id.image_status);
+        image_terminal = (ImageView) findViewById(R.id.image_terminal);
         //image_track = (ImageView) findViewById(R.id.image_status);
         image_flash = (ImageView) findViewById(R.id.image_flash);
         image_info = (ImageView) findViewById(R.id.image_info);
@@ -194,6 +196,14 @@ public class MainScreenActivity extends AppCompatActivity {
         //    }
         //});
 //
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainScreenActivity.this, TerminalApplication.class);
+                //Change the activity.
+                startActivity(i);
+            }
+        });
         // about
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,17 +246,11 @@ public class MainScreenActivity extends AppCompatActivity {
         //    }
         //});
 
-        btnStatus.setOnClickListener(new View.OnClickListener() {
+        btnTerminal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //turn on telemetry
-                //if (myBT.getConnected()) {
-                //    myBT.flush();
-                //    myBT.clearInput();
-                //    myBT.write("y1;".toString());
-                //}
-                //Intent i = new Intent(MainScreenActivity.this, AltimeterStatusTabActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
+                startActivity(i);
             }
         });
 
@@ -387,7 +391,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         //setEnabledCard(false, btnReset, image_reset, text_reset);
 
-        setEnabledCard(false, btnStatus, image_status, text_status);
+        setEnabledCard(false, btnTerminal, image_terminal, text_status);
 
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
