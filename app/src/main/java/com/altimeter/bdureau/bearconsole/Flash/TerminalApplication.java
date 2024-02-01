@@ -111,16 +111,7 @@ public class TerminalApplication extends AppCompatActivity {
             port.setParameters(115200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
         } catch (IOException e){}
 
-
-        //runOnUiThread(new Runnable() {
-        //    @Override
-        //    public void run() {
-        //        // Your task code goes here
-        //        terminalESP32((mUploadSTM32Callback));
-        //    }
-        //});
         new TerminalESP32Asyc().execute();
-
     }
 
     private class TerminalESP32Asyc extends AsyncTask<Void, Void, Void>  // UI thread
@@ -137,7 +128,7 @@ public class TerminalApplication extends AppCompatActivity {
         cmd = new CommandInterfaceESP32(UpCallback, port);
         //terminalAddText("Terminal started");
         CommandInterfaceESP32.cmdRet retVal = new CommandInterfaceESP32.cmdRet();
-        //this should be done async and turned on or off rather than just keeping it active "for a while"
+
         int len = cmd.recieveDebug(retVal.retValue, retVal.retValue.length, 100);
         if(len > 0) {
             runOnUiThread(new Runnable() {
@@ -147,9 +138,7 @@ public class TerminalApplication extends AppCompatActivity {
                     terminalAddText(new String(retVal.retValue));
                 }
             });
-
         }
-
     }
     UploadSTM32CallBack mUploadSTM32Callback = new UploadSTM32CallBack() {
         @Override

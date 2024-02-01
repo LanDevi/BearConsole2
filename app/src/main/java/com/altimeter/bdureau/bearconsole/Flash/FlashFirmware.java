@@ -310,21 +310,30 @@ public class FlashFirmware extends AppCompatActivity {
         clearDownloadDirectory(downloadDirectory);
         DLManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         String baseURL = DOWNLOAD_URL;
-        DownloadFile(DLManager, "https://www.google.com/robots.txt");
-        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE1);
-        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE2);
-        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE3);
-        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE4);
+        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE_VERSION, 0);
+        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE1,1);
+        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE2,2);
+        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE3,3);
+        DownloadFile(DLManager, baseURL + DOWNLOAD_NAME_FILE4,4);
 
     }
-    private long DownloadFile(DownloadManager manager, String fileURL) {
+    private long DownloadFile(DownloadManager manager, String fileURL, int filenumber) {
         Uri uri = Uri.parse(fileURL);
         String fileName = fileURL.substring(fileURL.lastIndexOf('/') + 1);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setTitle(fileName);
-        request.setDestinationInExternalPublicDir(DOWNLOAD_STANDARD_LOCATION, DOWNLOAD_STANDARD_FOLDER + fileName);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-        return DLManager.enqueue(request);
+        if(fileName.charAt(0) != filenumber && filenumber != 0) {
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setTitle(fileName);
+            request.setDestinationInExternalPublicDir(DOWNLOAD_STANDARD_LOCATION, DOWNLOAD_STANDARD_FOLDER + filenumber + fileName);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+            return manager.enqueue(request);
+        }
+        else{
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setTitle(fileName);
+            request.setDestinationInExternalPublicDir(DOWNLOAD_STANDARD_LOCATION, DOWNLOAD_STANDARD_FOLDER + fileName);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+            return manager.enqueue(request);
+        }
     }
     private void clearDownloadDirectory(String dir){
         File directory = new File(dir);
