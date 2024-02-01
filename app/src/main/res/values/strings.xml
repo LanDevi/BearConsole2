@@ -64,7 +64,7 @@
     <string name="msg17">Cancel uploading\n</string>
     <string name="msg18">Error: </string>
     <string name="firmware_cancel">Cancel</string>
-    <string name="recover_firmware">Recover Firmware</string>
+    <string name="recover_firmware">Select Firmware</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Select your altimeter model:</string>
     <string name="after_complete_upload">After the upload is complete you will be able to flash the real firmware</string>

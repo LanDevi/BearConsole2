@@ -64,7 +64,7 @@
     <string name="msg17">A feltoltes megszakitasa\n</string>
     <string name="msg18">Hiba: </string>
     <string name="firmware_cancel">Torles</string>
-    <string name="recover_firmware">Recover Firmware</string>
+    <string name="recover_firmware">firmware kiválasztása</string>
     <string name="flash_firmware">Firmware egetes</string>
     <string name="select_altimeter_model">Valaszd ki a magassagmero tipusat:</string>
     <string name="after_complete_upload">A feltoltes befejezese utan lehet beegetni a valos firmware-t</string>

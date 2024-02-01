@@ -64,7 +64,7 @@
     <string name="msg17">Cancella il caricamento\n</string>
     <string name="msg18">Errore: </string>
     <string name="firmware_cancel">Cancella</string>
-    <string name="recover_firmware">Recupero Firmware</string>
+    <string name="recover_firmware">selezione del firmware</string>
     <string name="flash_firmware">Carica il Firmware</string>
     <string name="select_altimeter_model">Scegli il tuo modello di altimetro:</string>
     <string name="after_complete_upload">Dopo che il caricamento è stato completato potrai caricare il firmware reale.</string>

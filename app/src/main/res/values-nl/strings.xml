@@ -65,7 +65,7 @@
     <string name="msg17">Uploaden annuleren\n</string>
     <string name="msg18">Fout: </string>
     <string name="firmware_cancel">Annuleren</string>
-    <string name="recover_firmware">Firmware herstellen</string>
+    <string name="recover_firmware">Firmware selecteren</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Selecteer uw hoogtemetermodel:</string>
     <string name="after_complete_upload">Nadat het uploaden is voltooid, kunt u de echte firmware flashen</string>

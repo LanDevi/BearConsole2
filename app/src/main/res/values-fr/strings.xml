@@ -68,7 +68,7 @@
     <string name="msg17">Annulation du chargement\n</string>
     <string name="msg18">Erreur: </string>
     <string name="firmware_cancel">Annuler</string>
-    <string name="recover_firmware">Réparer Firmware</string>
+    <string name="recover_firmware">sélection du firmware</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Choisissez l\'altimétre à flasher:</string>
     <string name="after_complete_upload">Après que le chargement soit terminé vous pourrez flasher le firmware</string>

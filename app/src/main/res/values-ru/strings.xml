@@ -67,7 +67,7 @@
     <string name="msg17">Отменить загрузку \n</string>
     <string name="msg18">Ошибка:</string>
     <string name="firmware_cancel">Отмена</string>
-    <string name="recover_firmware">Восстановить прошивку</string>
+    <string name="recover_firmware">выбор прошивки</string>
     <string name="flash_firmware">Прошить</string>
     <string name="select_altimeter_model">Выберите модель Вашего альтиметра:</string>
     <string name="after_complete_upload">После окончания загрузки Вы сможете прошить устройство</string>
