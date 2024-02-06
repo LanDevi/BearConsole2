@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinnerFirmware"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/altimultiv1_small" />
+        android:src="@drawable/altimultiesp32_small" />
     <TextView
         android:id="@+id/textViewBaudRate"
         android:layout_width="wrap_content"
@@ -53,7 +53,8 @@
         android:layout_below="@+id/imageAlti"
         android:layout_alignBaseline="@+id/textViewBaudRate"
         android:layout_alignParentRight="true"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:visibility="invisible" />
 
 
 
@@ -67,36 +68,18 @@
         android:text="@string/flash_firmware" />
 
     <Button
-        android:id="@+id/btRecover"
+        android:id="@+id/btSelectFiles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btFlash"
         android:layout_alignParentLeft="true"
         android:onClick="onClickRecover"
         android:text="@string/recover_firmware" />
-
-    <Button
-        android:id="@+id/btDetect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btRecover"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClickDetect"
-        android:text="@string/detect_firmware" />
-    <Button
-        android:id="@+id/btFirmwareInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btDetect"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClickFirmwareInfo"
-        android:text="@string/firmware_info" />
-
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btFirmwareInfo"
+        android:layout_below="@+id/btSelectFiles"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

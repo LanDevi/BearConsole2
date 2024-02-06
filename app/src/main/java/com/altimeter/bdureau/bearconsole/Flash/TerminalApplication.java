@@ -5,9 +5,9 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.BaseMovementMethod;
-import android.text.method.ScrollingMovementMethod;
-import android.view.Gravity;
+//import android.text.method.BaseMovementMethod;
+//import android.text.method.ScrollingMovementMethod;
+//import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flash.CommandInterfaceESP32;
-import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
+//import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flash.UploadSTM32CallBack;
 import com.altimeter.bdureau.bearconsole.R;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
@@ -25,13 +25,13 @@ import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+//import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class TerminalApplication extends AppCompatActivity {
     Button btnDismiss;
-    TextView txtViewVersion;
-    ConsoleApplication myBT;
+//    TextView txtViewVersion;
+//    ConsoleApplication myBT;
     TextView tvRead;
     UsbManager manager;
     UsbSerialDriver driver;
@@ -45,7 +45,7 @@ public class TerminalApplication extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        myBT = (ConsoleApplication) getApplication();
+//        myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_terminal);
 
         btnDismiss = (Button)findViewById(R.id.butDismiss);

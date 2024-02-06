@@ -4,17 +4,18 @@ package com.altimeter.bdureau.bearconsole;
  * @author: boris.dureau@neuf.fr
  **/
 
-import android.app.AlertDialog;
+//import android.app.AlertDialog;
 //import android.app.PendingIntent;
 //import android.content.BroadcastReceiver;
 //import android.content.Context;
-import android.content.DialogInterface;
+//import android.content.Context;
+//import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.hardware.usb.UsbDevice;
+//import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.net.Uri;
-import android.os.AsyncTask;
+//import android.net.Uri;
+//import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -26,7 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 //import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
@@ -47,40 +48,38 @@ import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
 //import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
 //import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
 import com.altimeter.bdureau.bearconsole.Flash.TerminalApplication;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+//import java.io.IOException;
+//import java.util.HashMap;
+//import java.util.Iterator;
+//import java.util.Map;
+//import java.util.Set;
 
 public class MainScreenActivity extends AppCompatActivity {
-    public String TAG = "MainScreenActivity";
-    String address = null;
+//    public String TAG = "MainScreenActivity";
+//    String address = null;
     //CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    CardView btnTelemetry, btnTerminal, btnFlashFirmware, btnTrack, btnInfo, btnTest;
+    CardView btnTerminal, btnFlashFirmware, btnInfo, btnTest;
 
-    ImageView image_settings, image_flights, image_telemetry, image_continuity, image_reset,
-            image_terminal, image_track, image_flash, image_info, image_connect;
-    TextView text_settings, text_flights, text_telemetry, text_continuity, text_reset,
-            text_status, text_track, text_flash, text_info, text_connect;
+    ImageView image_terminal, image_flash, image_info;
+    TextView text_status, text_flash, text_info;
 
     UsbManager usbManager;
-    UsbDevice device;
+//    UsbDevice device;
     public final String ACTION_USB_PERMISSION = "com.altimeter.bdureau.bearconsole.USB_PERMISSION";
 
-    ConsoleApplication myBT;
+//    ConsoleApplication myBT;
     //private AltiConfigData AltiCfg = null;
-    private FirmwareCompatibility firmCompat =null;
+//    private FirmwareCompatibility firmCompat =null;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+//    private GoogleApiClient client;
 
     //private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
     //    @Override
@@ -124,13 +123,13 @@ public class MainScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
+        usbManager = (UsbManager) getSystemService(USB_SERVICE);
 
         //get the bluetooth and USB Application pointer
-        myBT = (ConsoleApplication) getApplication();
+        //myBT = (ConsoleApplication) getApplication();
 
         //This will check if the firmware is compatible with the app and advice on flashing the firmware
-        firmCompat = new FirmwareCompatibility();
+//        firmCompat = new FirmwareCompatibility();
         setContentView(R.layout.activity_main_screen);
 
         IntentFilter filter = new IntentFilter();
@@ -176,15 +175,15 @@ public class MainScreenActivity extends AppCompatActivity {
         text_info = (TextView) findViewById(R.id.text_info);
         //text_connect = (TextView) findViewById(R.id.text_connect);
 
-        if (myBT.getConnected()) {
-            EnableUI();
-            //btnFlashFirmware.setEnabled(false);
-            setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
-        } else {
+//        if (myBT.getConnected()) {
+//            EnableUI();
+//            //btnFlashFirmware.setEnabled(false);
+//            setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
+//        } else {
             DisableUI();
             //text_connect.setText(getResources().getString(R.string.connect));
             setEnabledCard(true, btnFlashFirmware, image_flash, text_flash);
-        }
+//        }
 
         //commands to be sent to bluetooth
         //btnAltiSettings.setOnClickListener(new View.OnClickListener() {
@@ -360,7 +359,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+//        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -403,103 +402,103 @@ public class MainScreenActivity extends AppCompatActivity {
 
     }
 
-    private void EnableUI() {
-
-        boolean success;
-        //wait so that the port open
-        try { Thread.sleep(1000); } catch (InterruptedException e) {}
-        success = readConfig();
-        //second attempt
-        if (!success)
-            success = readConfig();
-        //third attempt
-        if (!success)
-            success = readConfig();
-        //fourth and last
-        if (!success)
-            success = readConfig();
-
-        /*
-        supported firmware
-        AltiMultiSTM32
-        AltiServo
-        AltiMultiV2
-        AltiGPS
-        AltiMulti
-        AltiDuo
-         */
-        //if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ||
-        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
-        //    Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
-        //    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
-        //        setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
-        //    } else {
-        //        //enable it for bT or USB only if full support
-        //        if (myBT.getAppConf().getConnectionType()==0 ||
-        //                (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
-        //            setEnabledCard(true, btnContinuityOnOff, image_continuity, text_continuity);
-        //        else
-        //            setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
-        //    }
+//    private void EnableUI() {
 //
-        //    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
-        //            myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
-        //        setEnabledCard(false, btnReadFlights, image_flights, text_flights);
-        //    } else {
-        //        //enable it for bT or USB only if full support
-        //        if (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.BT ||
-        //                (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport()))
-        //            setEnabledCard(true, btnReadFlights, image_flights, text_flights);
-        //        else
-        //            setEnabledCard(false, btnReadFlights, image_flights, text_flights);
-        //    }
-        //    setEnabledCard(true, btnTelemetry, image_telemetry, text_telemetry);
-        //    if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
-        //        setEnabledCard(true, btnTrack, image_track, text_track);
-        //    } else {
-        //        setEnabledCard(false, btnTrack, image_track, text_track);
-        //    }
-        //    //enable it for bT or USB only if full support
-        //    if (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.BT ||
-        //            (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport())) {
-        //        setEnabledCard(true, btnAltiSettings, image_settings, text_settings);
-        //        setEnabledCard(true, btnReset, image_reset, text_reset);
-        //        setEnabledCard(true, btnStatus, image_status, text_status);
-        //    } else {
-        //        setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
-        //        setEnabledCard(false, btnReset, image_reset, text_reset);
-        //        setEnabledCard(true, btnStatus, image_status, text_status);
-        //    }
+//        boolean success;
+//        //wait so that the port open
+//        try { Thread.sleep(1000); } catch (InterruptedException e) {}
+//        success = readConfig();
+//        //second attempt
+//        if (!success)
+//            success = readConfig();
+//        //third attempt
+//        if (!success)
+//            success = readConfig();
+//        //fourth and last
+//        if (!success)
+//            success = readConfig();
 //
-        //    text_connect.setText(getResources().getString(R.string.disconnect));
-        //    setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
-//
-        //    if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
-        //            myBT.getAltiConfigData().getAltiMajorVersion()+ "."+
-        //                    myBT.getAltiConfigData().getAltiMinorVersion())) {
-        //        msg(getString(R.string.flash_advice_msg));
-        //    }
-        //    else {
-        //        msg(getResources().getString(R.string.MS_msg4));
-        //    }
-        //} else {
-        //    msg(getString(R.string.unsuported_firmware_msg));
-        //    myBT.Disconnect();
-        //}
-        // now enable or disable the menu entries by invalidating it
-        invalidateOptionsMenu();
-    }
+//        /*
+//        supported firmware
+//        AltiMultiSTM32
+//        AltiServo
+//        AltiMultiV2
+//        AltiGPS
+//        AltiMulti
+//        AltiDuo
+//         */
+//        //if (myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiSTM32") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiV2") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMulti") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32") ||
+//        //        myBT.getAltiConfigData().getAltimeterName().equals("AltiMultiESP32_accel")) {
+//        //    Log.d("MainScreen", "altimeter name: " + myBT.getAltiConfigData().getAltimeterName());
+//        //    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo")) {
+//        //        setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
+//        //    } else {
+//        //        //enable it for bT or USB only if full support
+//        //        if (myBT.getAppConf().getConnectionType()==0 ||
+//        //                (myBT.getAppConf().getConnectionType()==1 && myBT.getAppConf().getFullUSBSupport()))
+//        //            setEnabledCard(true, btnContinuityOnOff, image_continuity, text_continuity);
+//        //        else
+//        //            setEnabledCard(false, btnContinuityOnOff, image_continuity, text_continuity);
+//        //    }
+////
+//        //    if (myBT.getAltiConfigData().getAltimeterName().equals("AltiServo") ||
+//        //            myBT.getAltiConfigData().getAltimeterName().equals("AltiDuo")) {
+//        //        setEnabledCard(false, btnReadFlights, image_flights, text_flights);
+//        //    } else {
+//        //        //enable it for bT or USB only if full support
+//        //        if (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.BT ||
+//        //                (myBT.getAppConf().getConnectionType()==GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport()))
+//        //            setEnabledCard(true, btnReadFlights, image_flights, text_flights);
+//        //        else
+//        //            setEnabledCard(false, btnReadFlights, image_flights, text_flights);
+//        //    }
+//        //    setEnabledCard(true, btnTelemetry, image_telemetry, text_telemetry);
+//        //    if(myBT.getAltiConfigData().getAltimeterName().equals("AltiGPS")) {
+//        //        setEnabledCard(true, btnTrack, image_track, text_track);
+//        //    } else {
+//        //        setEnabledCard(false, btnTrack, image_track, text_track);
+//        //    }
+//        //    //enable it for bT or USB only if full support
+//        //    if (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.BT ||
+//        //            (myBT.getAppConf().getConnectionType()== GlobalConfig.ConnectionType.USB && myBT.getAppConf().getFullUSBSupport())) {
+//        //        setEnabledCard(true, btnAltiSettings, image_settings, text_settings);
+//        //        setEnabledCard(true, btnReset, image_reset, text_reset);
+//        //        setEnabledCard(true, btnStatus, image_status, text_status);
+//        //    } else {
+//        //        setEnabledCard(false, btnAltiSettings, image_settings, text_settings);
+//        //        setEnabledCard(false, btnReset, image_reset, text_reset);
+//        //        setEnabledCard(true, btnStatus, image_status, text_status);
+//        //    }
+////
+//        //    text_connect.setText(getResources().getString(R.string.disconnect));
+//        //    setEnabledCard(false, btnFlashFirmware, image_flash, text_flash);
+////
+//        //    if(!firmCompat.IsCompatible(myBT.getAltiConfigData().getAltimeterName(),
+//        //            myBT.getAltiConfigData().getAltiMajorVersion()+ "."+
+//        //                    myBT.getAltiConfigData().getAltiMinorVersion())) {
+//        //        msg(getString(R.string.flash_advice_msg));
+//        //    }
+//        //    else {
+//        //        msg(getResources().getString(R.string.MS_msg4));
+//        //    }
+//        //} else {
+//        //    msg(getString(R.string.unsuported_firmware_msg));
+//        //    myBT.Disconnect();
+//        //}
+//        // now enable or disable the menu entries by invalidating it
+//        invalidateOptionsMenu();
+//    }
 
     // fast way to call Toast
-    private void msg(String s) {
-        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-    }
+//    private void msg(String s) {
+//        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+//    }
 
     //private void Disconnect() {
     //    myBT.Disconnect();
@@ -608,8 +607,8 @@ public class MainScreenActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
 
         //myBT.getAppConf().ReadConfig();
        ////only enable bluetooth module search if connection type is bluetooth
@@ -617,32 +616,32 @@ public class MainScreenActivity extends AppCompatActivity {
         //    menu.findItem(R.id.action_bluetooth).setEnabled(false);
         //}
         //else {
-            menu.findItem(R.id.action_bluetooth).setEnabled(true);
-        //}
-
-        //if we are connected then enable some menu options and if not disable them
-        if(myBT.getConnected()){
-            // We are connected so no need to choose the bluetooth
-            menu.findItem(R.id.action_bluetooth).setEnabled(false);
-            // We are connected so we do not want to configure the 3DR module
-            menu.findItem(R.id.action_mod3dr_settings).setEnabled(false);
-            // same goes for the BT module
-            menu.findItem(R.id.action_modbt_settings).setEnabled(false);
-            // same goes for the lora module
-            menu.findItem(R.id.action_modlora_settings).setEnabled(false);
-            // Allow connection testing
-            menu.findItem(R.id.action_test_connection).setEnabled(true);
-        } else {
-            // not connected so allow those
-            menu.findItem(R.id.action_mod3dr_settings).setEnabled(true);
-            menu.findItem(R.id.action_modbt_settings).setEnabled(true);
-            menu.findItem(R.id.action_modlora_settings).setEnabled(true);
-            //cannot do connection testing until we are connected
-            menu.findItem(R.id.action_test_connection).setEnabled(false);
-        }
-        return true;
-
-    }
+//            menu.findItem(R.id.action_bluetooth).setEnabled(true);
+//        //}
+//
+//        //if we are connected then enable some menu options and if not disable them
+//        if(myBT.getConnected()){
+//            // We are connected so no need to choose the bluetooth
+//            menu.findItem(R.id.action_bluetooth).setEnabled(false);
+//            // We are connected so we do not want to configure the 3DR module
+//            menu.findItem(R.id.action_mod3dr_settings).setEnabled(false);
+//            // same goes for the BT module
+//            menu.findItem(R.id.action_modbt_settings).setEnabled(false);
+//            // same goes for the lora module
+//            menu.findItem(R.id.action_modlora_settings).setEnabled(false);
+//            // Allow connection testing
+//            menu.findItem(R.id.action_test_connection).setEnabled(true);
+//        } else {
+//            // not connected so allow those
+//            menu.findItem(R.id.action_mod3dr_settings).setEnabled(true);
+//            menu.findItem(R.id.action_modbt_settings).setEnabled(true);
+//            menu.findItem(R.id.action_modlora_settings).setEnabled(true);
+//            //cannot do connection testing until we are connected
+//            menu.findItem(R.id.action_test_connection).setEnabled(false);
+//        }
+//        return true;
+//
+//    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -714,18 +713,18 @@ public class MainScreenActivity extends AppCompatActivity {
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "MainScreen Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+//        client.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "MainScreen Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app URL is correct.
+//                Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
@@ -734,118 +733,118 @@ public class MainScreenActivity extends AppCompatActivity {
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "MainScreen Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "MainScreen Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app URL is correct.
+//                Uri.parse("android-app://com.altimeter.bdureau.bearconsole/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client, viewAction);
+//        client.disconnect();
     }
 
     /* This is the Bluetooth connection sub class */
-    private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
-    {
-        private AlertDialog.Builder builder = null;
-        private AlertDialog alert;
-        private boolean ConnectSuccess = true; //if it's here, it's almost connected
+//    private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
+//    {
+//        private AlertDialog.Builder builder = null;
+//        private AlertDialog alert;
+//        private boolean ConnectSuccess = true; //if it's here, it's almost connected
+//
+//        @Override
+//        protected void onPreExecute() {
+//            //"Connecting...", "Please wait!!!"
+//            builder = new AlertDialog.Builder(MainScreenActivity.this);
+//            //Connecting...
+//            builder.setMessage(getResources().getString(R.string.MS_msg1)+ "\n"+ myBT.getModuleName())
+//                    .setTitle(getResources().getString(R.string.MS_msg2))
+//                    .setCancelable(false)
+//                    .setNegativeButton(getResources().getString(R.string.main_screen_actity), new DialogInterface.OnClickListener() {
+//                        public void onClick(final DialogInterface dialog, final int id) {
+//                            dialog.cancel();
+//                            myBT.setExit(true);
+//                            //myBT.Disconnect();
+//                        }
+//                    });
+//            alert = builder.create();
+//            alert.show();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
+//        {
+//
+//            //if (!myBT.getConnected()) {
+//            //    if (myBT.connect())
+//            //        ConnectSuccess = true;
+//            //    else
+//            //        ConnectSuccess = false;
+//            //}
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+//        {
+//            super.onPostExecute(result);
+//
+//            if (!ConnectSuccess) {
+//
+//            } else {
+//                //Connected.
+//                myBT.setConnected(true);
+//                EnableUI();
+//            }
+//            alert.dismiss();
+//        }
+//    }
 
-        @Override
-        protected void onPreExecute() {
-            //"Connecting...", "Please wait!!!"
-            builder = new AlertDialog.Builder(MainScreenActivity.this);
-            //Connecting...
-            builder.setMessage(getResources().getString(R.string.MS_msg1)+ "\n"+ myBT.getModuleName())
-                    .setTitle(getResources().getString(R.string.MS_msg2))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.main_screen_actity), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                            myBT.setExit(true);
-                            //myBT.Disconnect();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
-        {
-
-            //if (!myBT.getConnected()) {
-            //    if (myBT.connect())
-            //        ConnectSuccess = true;
-            //    else
-            //        ConnectSuccess = false;
-            //}
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
-        {
-            super.onPostExecute(result);
-
-            if (!ConnectSuccess) {
-
-            } else {
-                //Connected.
-                myBT.setConnected(true);
-                EnableUI();
-            }
-            alert.dismiss();
-        }
-    }
-
-    public class FirmwareCompatibility {
-        // Create a hash map
-        public HashMap<String, String> hm;
-        FirmwareCompatibility() {
-            hm =null;
-            hm = new HashMap();
-            //init compatible versions
-            Add("AltiMulti", "1.28");
-            Add("AltiMultiV2", "1.28");
-           // Add("AltiMultiV2", "1.25");
-            Add("AltiMultiSTM32", "1.28");
-            Add("AltiServo", "1.6");
-            Add("AltiGPS", "1.7");
-            Add("AltiDuo", "1.9");
-            Add("AltiMultiESP32", "1.28");
-            Add("AltiMultiESP32_accel", "1.28");
-
-        }
-        public void Add ( String altiName, String verList) {
-            hm.put(altiName,verList);
-        }
-
-        public boolean IsCompatible(String altiName,String ver) {
-            boolean compatible = false;
-            String compatFirmwareList="";
-            Set set = hm.entrySet();
-
-            // Get an iterator
-            Iterator i = set.iterator();
-            while(i.hasNext()) {
-                Map.Entry me = (Map.Entry)i.next();
-
-                if (me.getKey().equals(altiName)){
-                    compatFirmwareList = me.getValue().toString();
-                    break;
-                }
-            }
-            String firmwareVersion[] = compatFirmwareList.split(",");
-            for (int j = 0; j < firmwareVersion.length; j++ ){
-                if(firmwareVersion[j].equals(ver))
-                    compatible = true;
-            }
-            return compatible;
-        }
-    }
+//    public class FirmwareCompatibility {
+//        // Create a hash map
+//        public HashMap<String, String> hm;
+//        FirmwareCompatibility() {
+//            hm =null;
+//            hm = new HashMap();
+//            //init compatible versions
+//            Add("AltiMulti", "1.28");
+//            Add("AltiMultiV2", "1.28");
+//           // Add("AltiMultiV2", "1.25");
+//            Add("AltiMultiSTM32", "1.28");
+//            Add("AltiServo", "1.6");
+//            Add("AltiGPS", "1.7");
+//            Add("AltiDuo", "1.9");
+//            Add("AltiMultiESP32", "1.28");
+//            Add("AltiMultiESP32_accel", "1.28");
+//
+//        }
+//        public void Add ( String altiName, String verList) {
+//            hm.put(altiName,verList);
+//        }
+//
+//        public boolean IsCompatible(String altiName,String ver) {
+//            boolean compatible = false;
+//            String compatFirmwareList="";
+//            Set set = hm.entrySet();
+//
+//            // Get an iterator
+//            Iterator i = set.iterator();
+//            while(i.hasNext()) {
+//                Map.Entry me = (Map.Entry)i.next();
+//
+//                if (me.getKey().equals(altiName)){
+//                    compatFirmwareList = me.getValue().toString();
+//                    break;
+//                }
+//            }
+//            String firmwareVersion[] = compatFirmwareList.split(",");
+//            for (int j = 0; j < firmwareVersion.length; j++ ){
+//                if(firmwareVersion[j].equals(ver))
+//                    compatible = true;
+//            }
+//            return compatible;
+//        }
+//    }
 }

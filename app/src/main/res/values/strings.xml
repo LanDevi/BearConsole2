@@ -83,7 +83,7 @@
     <string name="status_screen">Status</string>
 
     <!--telemetry module config -->
-    <string name="chip_has_not_been_init">Chip has been initiated:</string>
+    <string name="chip_has_been_init">Chip has been initiated:</string>
     <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
     <string name="flash_firmware_title">Flash firmware</string>
     <string name="flash_firmware_ok">OK</string>

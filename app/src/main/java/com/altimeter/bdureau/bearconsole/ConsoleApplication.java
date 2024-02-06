@@ -4,18 +4,18 @@ package com.altimeter.bdureau.bearconsole;
  * @author: boris.dureau@neuf.fr
  **/
 
-import android.Manifest;
+//import android.Manifest;
 import android.app.Application;
 
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbManager;
-import android.os.Build;
+//import android.content.pm.PackageManager;
+//import android.content.res.Configuration;
+//import android.hardware.usb.UsbDevice;
+//import android.hardware.usb.UsbManager;
+//import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
+//import android.util.Log;
 
-import androidx.core.content.ContextCompat;
+//import androidx.core.content.ContextCompat;
 
 //import com.altimeter.bdureau.bearconsole.Flight.FlightData;
 //import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
@@ -23,10 +23,10 @@ import androidx.core.content.ContextCompat;
 //import com.altimeter.bdureau.bearconsole.connection.BluetoothConnection;
 //import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.Locale;
+//import java.util.Locale;
 
 /**
  * @description: This is quite a major class used everywhere because it can point to your connection,
@@ -34,20 +34,20 @@ import java.util.Locale;
  * @author: boris.dureau@neuf.fr
  **/
 public class ConsoleApplication extends Application {
-    private boolean isConnected = false;
+//    private final boolean isConnected = false;
     // Store number of flight
     public int NbrOfFlight = 0;
-    public int currentFlightNbr = 0;
+//    public int currentFlightNbr = 0;
     //private FlightData MyFlight = null;
     //private AltiConfigData AltiCfg = null;
     private TestTrame testTrame = null;
 
     private static boolean DataReady = false;
-    public long lastReceived = 0;
-    public String commandRet = "";
+//    public long lastReceived = 0;
+//    public String commandRet = "";
 
-    private double FEET_IN_METER = 1;
-    private boolean exit = false;
+//    private final double FEET_IN_METER = 1;
+//    private boolean exit = false;
     //private GlobalConfig AppConf = null;
     private String address, moduleName;
     private String myTypeOfConnection = "bluetooth";// "USB";//"bluetooth";
@@ -55,14 +55,14 @@ public class ConsoleApplication extends Application {
     //private BluetoothConnection BTCon = null;
     //private UsbConnection UsbCon = null;
 
-    private Handler mHandler;
+//    private Handler mHandler;
 
-    public void setHandler(Handler mHandler) {
-        this.mHandler = mHandler;
-    }
+//    public void setHandler(Handler mHandler) {
+//        this.mHandler = mHandler;
+//    }
 
-    public String lastReadResult;
-    public String lastData;
+//    public String lastReadResult;
+//    public String lastData;
 
     @Override
     public void onCreate() {
@@ -79,61 +79,61 @@ public class ConsoleApplication extends Application {
         //myTypeOfConnection = AppConf.getConnectionTypeValue();
     }
 
-    public void setConnectionType(String TypeOfConnection) {
-        myTypeOfConnection = TypeOfConnection;
-    }
+//    public void setConnectionType(String TypeOfConnection) {
+//        myTypeOfConnection = TypeOfConnection;
+//    }
 
-    public String getConnectionType() {
-        return myTypeOfConnection;
-    }
+//    public String getConnectionType() {
+//        return myTypeOfConnection;
+//    }
 
-    public void setAddress(String bTAddress) {
-        address = bTAddress;
-    }
+//    public void setAddress(String bTAddress) {
+//        address = bTAddress;
+//    }
 
-    public String getAddress() {
-        return address;
-    }
+//    public String getAddress() {
+//        return address;
+//    }
 
-    public String getModuleName() {
-        return moduleName;
-    }
+//    public String getModuleName() {
+//        return moduleName;
+//    }
 
-    public void setModuleName(String bTmoduleName) {
-        moduleName = bTmoduleName;
-    }
+//    public void setModuleName(String bTmoduleName) {
+//        moduleName = bTmoduleName;
+//    }
 
-    public InputStream getInputStream() {
-        InputStream tmpIn = null;
-        //if (myTypeOfConnection.equals("bluetooth")) {
-        //    tmpIn = BTCon.getInputStream();
-        //} else {
-        //    tmpIn = UsbCon.getInputStream();
-        //}
-        return tmpIn;
-    }
+//    public InputStream getInputStream() {
+//        InputStream tmpIn = null;
+//        //if (myTypeOfConnection.equals("bluetooth")) {
+//        //    tmpIn = BTCon.getInputStream();
+//        //} else {
+//        //    tmpIn = UsbCon.getInputStream();
+//        //}
+//        return tmpIn;
+//    }
 
-    public void setConnected(boolean Connected) {
+//    public void setConnected(boolean Connected) {
         //if (myTypeOfConnection.equals("bluetooth")) {
         //    BTCon.setBTConnected(Connected);
         //} else {
         //    UsbCon.setUSBConnected(Connected);
         //}
-    }
+//    }
 
     //public UsbConnection getUsbCon() {
     //    return UsbCon;
     //}
 
-    public boolean getConnected() {
-        boolean ret = false;
-        //if (myTypeOfConnection.equals("bluetooth")) {
-        //    ret = BTCon.getBTConnected();
-        //} else {
-        //    ret = UsbCon.getUSBConnected();
-        //}
-        return ret;
-    }
+//    public boolean getConnected() {
+//        boolean ret = false;
+//        //if (myTypeOfConnection.equals("bluetooth")) {
+//        //    ret = BTCon.getBTConnected();
+//        //} else {
+//        //    ret = UsbCon.getUSBConnected();
+//        //}
+//        return ret;
+//    }
 
     //public void setAltiConfigData(AltiConfigData configData) {
     //    AltiCfg = configData;
@@ -143,9 +143,9 @@ public class ConsoleApplication extends Application {
     //    return AltiCfg;
     //}
 
-    public TestTrame getTestTrame() {
-        return testTrame;
-    }
+//    public TestTrame getTestTrame() {
+//        return testTrame;
+//    }
 
     //public void setFlightData(FlightData fData) {
     //    MyFlight = fData;
@@ -155,13 +155,13 @@ public class ConsoleApplication extends Application {
     //    return MyFlight;
     //}
 
-    public int getNbrOfFlight() {
-        return NbrOfFlight;
-    }
+//    public int getNbrOfFlight() {
+//        return NbrOfFlight;
+//    }
 
-    public void setNbrOfFlight(int value) {
-        NbrOfFlight = value;
-    }
+//    public void setNbrOfFlight(int value) {
+//        NbrOfFlight = value;
+//    }
 
     // connect to the bluetooth adapter
     //public boolean connect() {
@@ -298,37 +298,37 @@ public class ConsoleApplication extends Application {
     //}
 
 
-    public void setExit(boolean b) {
-        this.exit = b;
-    }
+//    public void setExit(boolean b) {
+//        this.exit = b;
+//    }
 
 
-    public long calculateSentenceCHK(String currentSentence[]) {
-        long chk = 0;
-        String sentence = "";
+//    public long calculateSentenceCHK(String[] currentSentence) {
+//        long chk = 0;
+//        String sentence = "";
+//
+//        for (int i = 0; i < currentSentence.length - 1; i++) {
+//            sentence = sentence + currentSentence[i] + ",";
+//        }
+//        //Log.d("calculateSentenceCHK", sentence);
+//        chk = generateCheckSum(sentence);
+//        return chk;
+//    }
 
-        for (int i = 0; i < currentSentence.length - 1; i++) {
-            sentence = sentence + currentSentence[i] + ",";
-        }
-        //Log.d("calculateSentenceCHK", sentence);
-        chk = generateCheckSum(sentence);
-        return chk;
-    }
-
-    public static Integer generateCheckSum(String value) {
-
-        byte[] data = value.getBytes();
-        long checksum = 0L;
-
-        for (byte b : data) {
-            checksum += b;
-        }
-
-        checksum = checksum % 256;
-
-        return new Long(checksum).intValue();
-
-    }
+//    public static Integer generateCheckSum(String value) {
+//
+//        byte[] data = value.getBytes();
+//        long checksum = 0L;
+//
+//        for (byte b : data) {
+//            checksum += b;
+//        }
+//
+//        checksum = checksum % 256;
+//
+//        return Long.valueOf(checksum).intValue();
+//
+//    }
 
     /*public String ReadResult(long timeout) {
 
@@ -1102,13 +1102,13 @@ public class ConsoleApplication extends Application {
         return myMessage;
     }*/
 
-    public void setDataReady(boolean value) {
-        DataReady = value;
-    }
+//    public void setDataReady(boolean value) {
+//        DataReady = value;
+//    }
 
-    public boolean getDataReady() {
-        return DataReady;
-    }
+//    public boolean getDataReady() {
+//        return DataReady;
+//    }
 
 
     //public Configuration getAppLocal() {
@@ -1140,24 +1140,24 @@ public class ConsoleApplication extends Application {
 
     public class TestTrame {
 
-        private String currentTrame = "";
-        private boolean trameStatus = false;
+//        private String currentTrame = "";
+//        private boolean trameStatus = false;
 
-        public void setCurrentTrame(String trame) {
-            currentTrame = trame;
-        }
+//        public void setCurrentTrame(String trame) {
+//            currentTrame = trame;
+//        }
 
-        public String getCurrentTrame() {
-            return currentTrame;
-        }
+//        public String getCurrentTrame() {
+//            return currentTrame;
+//        }
 
-        public void setTrameStatus(boolean val) {
-            trameStatus = val;
-        }
+//        public void setTrameStatus(boolean val) {
+//            trameStatus = val;
+//        }
 
-        public boolean getTrameStatus() {
-            return trameStatus;
-        }
+//        public boolean getTrameStatus() {
+//            return trameStatus;
+//        }
     }
 }
 

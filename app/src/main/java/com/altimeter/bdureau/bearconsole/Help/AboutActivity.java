@@ -19,7 +19,7 @@ public class AboutActivity extends AppCompatActivity {
 
     Button btnDismiss;
     TextView txtViewVersion;
-    ConsoleApplication myBT;
+//    ConsoleApplication myBT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        myBT = (ConsoleApplication) getApplication();
+//        myBT = (ConsoleApplication) getApplication();
 
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_about);
