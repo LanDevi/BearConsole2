@@ -1,7 +1,7 @@
 package com.altimeter.bdureau.bearconsole.Help;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+//import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Build;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
-import java.util.Locale;
+//import java.util.Locale;
 
 /**
  * @description: This read and display the html help file
@@ -24,14 +24,14 @@ import java.util.Locale;
 public class HelpActivity extends AppCompatActivity {
     Button btnDismiss;
     WebView webView;
-    ConsoleApplication myBT;
+//    ConsoleApplication myBT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //get the bluetooth Application pointer
-        myBT = (ConsoleApplication) getApplication();
+//        myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
@@ -51,25 +51,25 @@ public class HelpActivity extends AppCompatActivity {
         Intent newint = getIntent();
         String FileName = newint.getStringExtra("help_file");
 
-        if(myBT.getAppConf().getApplicationLanguage()==0) {
-            //use phone language
-            try {
-                if (Locale.getDefault().getLanguage() == "fr")
-                    webView.loadUrl("file:///android_asset/help/" + FileName + "_fr.html");
-                else if (Locale.getDefault().getLanguage() == "es")
-                    webView.loadUrl("file:///android_asset/help/" + FileName + "_es.html");
-                else if (Locale.getDefault().getLanguage() == "it")
-                    webView.loadUrl("file:///android_asset/help/" + FileName + "_it.html");
-                else
-                    webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
-            } catch (Exception e) {
-                e.printStackTrace();
-                webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
-            }
-        } else {
+        //if(myBT.getAppConf().getApplicationLanguage()==0) {
+        //    //use phone language
+        //    try {
+        //        if (Locale.getDefault().getLanguage() == "fr")
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + "_fr.html");
+        //        else if (Locale.getDefault().getLanguage() == "es")
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + "_es.html");
+        //        else if (Locale.getDefault().getLanguage() == "it")
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + "_it.html");
+        //        else
+        //            webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
+        //    } catch (Exception e) {
+        //        e.printStackTrace();
+        //        webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
+        //    }
+        //} else {
             //force it to English
             webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
-        }
+        //}
 
         btnDismiss = (Button) findViewById(R.id.butClose);
         btnDismiss.setOnClickListener(new View.OnClickListener() {

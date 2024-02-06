@@ -1,18 +1,18 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+//import java.io.ByteArrayOutputStream;
 import java.lang.*;
 import java.nio.ByteOrder;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 import static java.lang.Math.*;
 
 public class Struct {
-    private short BigEndian = 0;
-    private short LittleEndian = 1;
+    private final short BigEndian = 0;
+    private final short LittleEndian = 1;
     private short byteOrder;
-    private short nativeByteOrder;
+    private final short nativeByteOrder;
 
     Struct(){
         ByteOrder x = ByteOrder.nativeOrder();
@@ -89,7 +89,7 @@ public class Struct {
         } else {
             long v2 = abs(val);
             v2 = (v2 ^ 0x7fffffff)+1; // invert bits and add 1
-            v2 = v2 | (1<<31); // add the 32nd bit as negative bit
+            v2 = v2 | (1L <<31); // add the 32nd bit as negative bit
             bx[0] = (byte) (v2 & 0xff);
             bx[1] = (byte) ((v2>>8) & 0xff);
             bx[2]= (byte) ((v2>>16) &0xff);
@@ -191,53 +191,53 @@ public class Struct {
         return bx;
     }
 
-    public byte[] pack(String fmt, long[] vals) throws Exception{
-        char c0 = fmt.charAt(0);
-        int len;
-        if((c0 == '@') || (c0 == '>') || (c0 == '<') || (c0 == '!')) {
-            len = fmt.length() - 1;
-        } else {
-            len = fmt.length();
-        }
-
-        if(len!=vals.length)
-            throw new Exception("format length and values aren't equal");
-
-        len = lenEst(fmt);
-
-        byte[] bxx = new byte[0];
-        byte[] bx;
-        byte[] temp;
-
-        for (int i=0; i<fmt.length(); i++){
-            char c = fmt.charAt(i);
-            if ((i == 0) && ((c == '>') || (c == '<') || (c == '@') || (c == '!'))){
-                if (c == '>')
-                    byteOrder = BigEndian;
-                else if (c == '<')
-                    byteOrder = LittleEndian;
-                else if(c == '!')
-                    byteOrder = BigEndian;
-                else if (c == '@')
-                    byteOrder = nativeByteOrder;
-            }
-            else if((c != '>') && (c != '<') && (c != '@') && (c != '!')) {
-                if((c0 == '@') || (c0 == '>') || (c0 == '<') || (c0 == '!')) {
-                    bx = pack(Character.toString(c), vals[i-1]);
-                }
-                else {
-                    bx = pack(Character.toString(c), vals[i]);
-                }
-                temp = new byte[bxx.length + bx.length];
-                System.arraycopy(bxx, 0, temp, 0,bxx.length);
-                System.arraycopy(bx, 0, temp, bxx.length, bx.length);
-
-                bxx = Arrays.copyOf(temp, temp.length);
-            }
-        }
-
-        return bxx;
-    }
+//    public byte[] pack(String fmt, long[] vals) throws Exception{
+//        char c0 = fmt.charAt(0);
+//        int len;
+//        if((c0 == '@') || (c0 == '>') || (c0 == '<') || (c0 == '!')) {
+//            len = fmt.length() - 1;
+//        } else {
+//            len = fmt.length();
+//        }
+//
+//        if(len!=vals.length)
+//            throw new Exception("format length and values aren't equal");
+//
+//        len = lenEst(fmt);
+//
+//        byte[] bxx = new byte[0];
+//        byte[] bx;
+//        byte[] temp;
+//
+//        for (int i=0; i<fmt.length(); i++){
+//            char c = fmt.charAt(i);
+//            if ((i == 0) && ((c == '>') || (c == '<') || (c == '@') || (c == '!'))){
+//                if (c == '>')
+//                    byteOrder = BigEndian;
+//                else if (c == '<')
+//                    byteOrder = LittleEndian;
+//                else if(c == '!')
+//                    byteOrder = BigEndian;
+//                else if (c == '@')
+//                    byteOrder = nativeByteOrder;
+//            }
+//            else if((c != '>') && (c != '<') && (c != '@') && (c != '!')) {
+//                if((c0 == '@') || (c0 == '>') || (c0 == '<') || (c0 == '!')) {
+//                    bx = pack(Character.toString(c), vals[i-1]);
+//                }
+//                else {
+//                    bx = pack(Character.toString(c), vals[i]);
+//                }
+//                temp = new byte[bxx.length + bx.length];
+//                System.arraycopy(bxx, 0, temp, 0,bxx.length);
+//                System.arraycopy(bx, 0, temp, bxx.length, bx.length);
+//
+//                bxx = Arrays.copyOf(temp, temp.length);
+//            }
+//        }
+//
+//        return bxx;
+//    }
 
 
     private long unpackRaw_16b(byte[] val){

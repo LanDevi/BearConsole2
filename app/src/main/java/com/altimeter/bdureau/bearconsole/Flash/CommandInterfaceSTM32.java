@@ -87,7 +87,7 @@ public class CommandInterfaceSTM32 {
     }
     private int _wait_for_ack(String info, long timeout) {
         long stop = System.currentTimeMillis() + timeout;
-        byte got[] =new byte[1];
+        byte[] got =new byte[1];
         while (mPhysicaloid.read(got) <1) {
             if (System.currentTimeMillis() > stop)
                 break;
@@ -121,12 +121,12 @@ public class CommandInterfaceSTM32 {
         mPhysicaloid.setDtrRts(true, false);
         reset();
         long stop = System.currentTimeMillis() + 5000;
-        byte got[] = new byte[10];
+        byte[] got = new byte[10];
         int i=0;
         while (System.currentTimeMillis() <= stop) {
             int retval=0;
 
-            byte buf[]= new byte[32];
+            byte[] buf = new byte[32];
             mPhysicaloid.write(new byte[]{(byte) 0x7f});
             retval =recv(buf, 32);
             if (retval > 0) {
@@ -160,8 +160,8 @@ public class CommandInterfaceSTM32 {
     }
 
     public int cmdGet () {
-        byte cmd []= new byte[1];
-        byte buf[] =new byte[50];
+        byte[] cmd = new byte[1];
+        byte[] buf =new byte[50];
         int version = -1;
         drain();
         cmd[0]=0x00;
@@ -182,8 +182,8 @@ public class CommandInterfaceSTM32 {
 
 
     public int cmdGetVersion () {
-        byte cmd []= new byte[1];
-        byte buf[] =new byte[1];
+        byte[] cmd = new byte[1];
+        byte[] buf =new byte[1];
         int version = -1;
         cmd[0]=0x01;
         if (cmdGeneric(cmd)==1) {
@@ -195,8 +195,8 @@ public class CommandInterfaceSTM32 {
     }
     public byte[] cmdGetID () {
 
-        byte cmd []= new byte[1];
-        byte buf[] =new byte[50];
+        byte[] cmd = new byte[1];
+        byte[] buf =new byte[50];
         int id = -1;
         cmd[0]=0x02;
         if (cmdGeneric(cmd)==1) {
@@ -222,14 +222,14 @@ public class CommandInterfaceSTM32 {
     }
 
     private int cmdReadMemory (int addr, int lng) {
-        byte cmd []= new byte[1];
+        byte[] cmd = new byte[1];
         cmd [0]=0x11;
         if(cmdGeneric(cmd)==1) {
             mPhysicaloid.write(_encode_addr(addr));
             _wait_for_ack("0x11 address failed",0);
             int N = (lng -1) & 0xFF;
             int crc = N ^ 0xFF;
-            byte cmd2[] = new byte[2];
+            byte[] cmd2 = new byte[2];
             cmd2[0] = (byte) N;
             cmd2[1] = (byte) crc;
             mPhysicaloid.write(cmd2);
@@ -241,7 +241,7 @@ public class CommandInterfaceSTM32 {
     }
 
     public int cmdGo (int addr) {
-        byte cmd []= new byte[1];
+        byte[] cmd = new byte[1];
         cmd [0]=0x21;
         if(cmdGeneric(cmd)==1) {
             mPhysicaloid.write(_encode_addr(addr));
@@ -255,10 +255,10 @@ public class CommandInterfaceSTM32 {
 
 
     //writeMemory
-    private int cmdWriteMemory (int addr,byte buf[]) {
+    private int cmdWriteMemory (int addr, byte[] buf) {
         int lng=0;
 
-        byte cmd []= new byte[1];
+        byte[] cmd = new byte[1];
         cmd [0]=0x31;
         if(cmdGeneric(cmd)==1) {
             int ret = mPhysicaloid.write(_encode_addr(addr));
@@ -287,7 +287,7 @@ public class CommandInterfaceSTM32 {
 
     public int cmdEraseMemory ( ) {
 
-        byte cmd []= new byte[1];
+        byte[] cmd = new byte[1];
         cmd [0]=0x43;
         if(cmdGeneric(cmd)==1) {
             cmd[0]= (byte) 0xFF;//-1;//0xFF in unsigned byte
@@ -302,7 +302,7 @@ public class CommandInterfaceSTM32 {
     }
 
     public int cmdExtendedEraseMemory () {
-        byte cmd []= new byte[1];
+        byte[] cmd = new byte[1];
         cmd [0]=0x44;
         if(cmdGeneric(cmd)==1) {
             cmd[0]= (byte) 0xFF;//-1;//0xFF in unsigned byte
@@ -320,7 +320,7 @@ public class CommandInterfaceSTM32 {
     }
 
     private int cmdWriteProtect () {
-        byte cmd []= new byte[1];
+        byte[] cmd = new byte[1];
         cmd [0]=0x63;
         if(cmdGeneric(cmd)==1) {
 
@@ -369,10 +369,8 @@ public class CommandInterfaceSTM32 {
 
 
         while (lng > 256) {
-            byte buf[] = new byte[256];
-            for (int i =0; i< 256; i++) {
-                buf[i]= data[(i+offs)];
-            }
+            byte[] buf = new byte[256];
+            System.arraycopy(data, 0 + offs, buf, 0, 256);
             int ret = cmdWriteMemory(addr, buf);
             if(ret !=1)
                 mUpCallback.onInfo("error writing to mem:" + lng + "\n");
@@ -385,10 +383,8 @@ public class CommandInterfaceSTM32 {
             //dialogAppend(((offs*100)/tot)+"%" );
             mUpCallback.onUploading((offs*100)/tot);
         }
-        byte buf2[] = new byte[256];
-        for (int i =0; i< lng; i++) {
-            buf2[i]= data[(i+offs)];
-        }
+        byte[] buf2 = new byte[256];
+        if (lng >= 0) System.arraycopy(data, 0 + offs, buf2, 0, lng);
         for (int i =lng; i< 256; i++) {
             buf2[i]= (byte)0xFF;
         }
