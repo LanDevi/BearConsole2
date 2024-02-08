@@ -515,7 +515,7 @@ public class CommandInterfaceESP32 {
 
     public void init() {
 
-        int _flashsize = 4 * 1024 * 1024;
+        int _flashsize = 16 * 1024 * 1024;
 
         if (!IS_STUB) {
             //System.out.println("No stub...");

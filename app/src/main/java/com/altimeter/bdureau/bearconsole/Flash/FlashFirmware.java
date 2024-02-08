@@ -97,9 +97,9 @@ public class FlashFirmware extends AppCompatActivity {
 //    private static final String ASSET_FILE_NAME_ALTIGPS = "firmwares/2023-02-26-RocketGPSLoggerV1.7.bin";
 private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_flasher_32.json";
     private static final String ASSET_FILE_NAME_ALTIESP32_FILE1 = "firmwares/ESP32/boot_app0.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bootloader.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.bin";
-    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/2023-02-27-RocketFlightLoggerV1_28.ino.partitions.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE2 = "firmwares/ESP32/chair-software.ino.bootloader.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE3 = "firmwares/ESP32/chair-software.ino.bin";
+    private static final String ASSET_FILE_NAME_ALTIESP32_FILE4 = "firmwares/ESP32/chair-software.ino.partitions.bin";
 
 //    private static final String ASSET_FILE_RESET_ALTIDUO = "recover_firmwares/ResetAltiConfigAltiDuo.ino.hex";
 //    private static final String ASSET_FILE_RESET_ALTIMULTI = "recover_firmwares/ResetAltiConfigAltimulti.ino.hex";
@@ -111,14 +111,14 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
 //    private static final String ASSET_FILE_RESET_ALTIESP32_FILE3 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.bin";
 //    private static final String ASSET_FILE_RESET_ALTIESP32_FILE4 = "firmwares/old/ResetAltiConfigAltimultiESP32.ino.partitions.bin";
 
-    private static final String DOWNLOAD_NAME_FILE1 = "";
-    private static final String DOWNLOAD_NAME_FILE2 = "";
-    private static final String DOWNLOAD_NAME_FILE3 = "";
-    private static final String DOWNLOAD_NAME_FILE4 = "";
-    private static final String DOWNLOAD_NAME_FILE_VERSION = "";
+    private static final String DOWNLOAD_NAME_FILE1 = "boot_app0.bin";
+    private static final String DOWNLOAD_NAME_FILE2 = "chair-software.ino.bootloader.bin";
+    private static final String DOWNLOAD_NAME_FILE3 = "chair-software.ino.bin";
+    private static final String DOWNLOAD_NAME_FILE4 = "chair-software.ino.partitions.bin";
+    private static final String DOWNLOAD_NAME_FILE_VERSION = "Version.txt";
     private static final String DOWNLOAD_STANDARD_LOCATION = Environment.DIRECTORY_DCIM;
-    private static final String DOWNLOAD_STANDARD_FOLDER = "";
-    private static final String DOWNLOAD_URL = "";
+    private static final String DOWNLOAD_STANDARD_FOLDER = "/UP-Stairlift/ChairSoftware/Temp/";
+    private static final String DOWNLOAD_URL = "https://www.up-database.com/content/ChairSoftware/";
 
 //    private String[] itemsBaudRate;
     private String[] itemsFirmwares;
