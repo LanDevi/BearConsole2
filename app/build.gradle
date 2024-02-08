@@ -9,9 +9,6 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }*/
-    aaptOptions {
-        cruncherEnabled = false
-    }
     defaultConfig {
         applicationId 'com.altimeter.bdureau.bearconsole'
         minSdk 21
@@ -38,6 +35,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.altimeter.bdureau.bearconsole'
 }
 
 dependencies {
