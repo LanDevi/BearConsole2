@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.altimeter.bdureau.bearconsole.BuildConfig;
-import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+//import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
 
@@ -32,8 +32,8 @@ public class AboutActivity extends AppCompatActivity {
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
         setContentView(R.layout.activity_about);
 
-        btnDismiss = (Button)findViewById(R.id.butDismiss);
-        txtViewVersion = (TextView) findViewById(R.id.txtViewVersion);
+        btnDismiss = findViewById(R.id.butDismiss);
+        txtViewVersion = findViewById(R.id.txtViewVersion);
         txtViewVersion.setText(BuildConfig.VERSION_NAME);
         btnDismiss.setOnClickListener(new View.OnClickListener()
         {

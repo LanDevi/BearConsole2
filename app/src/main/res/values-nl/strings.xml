@@ -5,11 +5,8 @@
     <!-- Menu -->
     <string name="help">Over</string>
     <string name="about">About</string>
-    <string name="action_settings">Applicatie instellingen</string>
-    <string name="bluetooth_device">Bluetooth-apparaat</string>
 
     <!-- Screen altimeter config-->
-    <string name="altimeter_config">Hoogtemeterconfiguratie</string>
     <!-- AltimeterConfigActivity Spinners -->
     <!-- Config tab1 tooltips -->
 
@@ -17,7 +14,6 @@
     <!-- Config tab3 -->
     <!-- Config tab4-->
     <!-- Main Screen -->
-    <string name="reset_settings">Reset\ninstellingen</string>
 
     <!--connection screen -->
 
@@ -26,11 +22,10 @@
     <!-- bluetooth messages -->
 
     <!-- main screen msg-->
-    <string name="MS_msg1">Verbinden...</string>
+    <string name="MS_msg1">Verbinden…</string>
     <string name="MS_msg2">Wacht alsjeblieft!!!</string>
 
     <!--Flight list screen -->
-    <string name="Flight_list">Vluchtlijst</string>
 
     <!-- About screen -->
     <string name="about_screen">Over</string>
@@ -43,7 +38,6 @@
 
     <!-- flight views screen -->
     <!-- Application preference screen-->
-    <string name="titre_application_pref">Programma voorkeuren</string>
 
 
     <!-- Config-->
@@ -52,10 +46,9 @@
 
 
     <!-- Status -->
-    <string name="status">Toestand</string>
 
     <!-- flash firmware -->
-    <string name="msg10">Flashing firmware...</string>
+    <string name="msg10">Flashing firmware…</string>
     <string name="msg11">Wacht alsjeblieft!!!</string>
     <string name="msg12">Uploaden: </string>
     <string name="msg13">Kan niet openen</string>
@@ -68,9 +61,6 @@
     <string name="recover_firmware">Firmware selecteren</string>
     <string name="flash_firmware">Flash Firmware</string>
     <string name="select_altimeter_model">Selecteer uw hoogtemetermodel:</string>
-    <string name="after_complete_upload">Nadat het uploaden is voltooid, kunt u de echte firmware flashen</string>
-    <string name="detect_firmware">Detecteren firmware</string>
-    <string name="msg_detect_firmware">Poging om firmware te detecteren!!!</string>
 
     <!--- other -->
     <string name="main_screen_actity">Annuleren</string>
@@ -80,24 +70,15 @@
     <!--curves name -->
 
 
-    <string name="select_bluetooth_device">Selecteer Bluetooth-apparaat</string>
-    <string name="telemetry_screen">Telemetrie</string>
-    <string name="status_screen">Toestand</string>
-
     <!--telemetry module config -->
     <string name="chip_has_been_init">Chip has been initiated:</string>
-    <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
+    <string name="flash_firmware_msg">This will allows you to flash the chair pcb firmware to make it up-to-date. You will need program PCB and USB on-the-go adapter to connect  the board to your device. For help open the help file from the top right menu.</string>
     <string name="flash_firmware_title">Flash firmware</string>
     <string name="flash_firmware_ok">OK</string>
-    <string name="firmware_version_not_detected">Firmware version detected: </string>
-    <string name="_3dr_settings">3DR settings...</string>
-    <string name="bt_settings">BT settings...</string>
-    <string name="share">Share</string>
 
     <!-- GPS -->
     <string name="firmware">Firmware:</string>
     <string name="flash_speed_baud">Flash speed(Baud):</string>
-    <string name="firmware_info">Firmware info</string>
     <string name="flash_nfirmware">Flash\nfirmware</string>
 
 </resources>

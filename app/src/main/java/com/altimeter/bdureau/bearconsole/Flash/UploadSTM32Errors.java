@@ -15,7 +15,7 @@ public enum UploadSTM32Errors {
     private final int code;
     private final String description;
 
-    private UploadSTM32Errors(int code, String description) {
+    UploadSTM32Errors(int code, String description) {
         this.code = code;
         this.description = description;
     }

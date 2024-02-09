@@ -17,7 +17,7 @@ package com.altimeter.bdureau.bearconsole.Flash;
  *  and boot buttons on the board
  **/
 import com.hoho.android.usbserial.driver.UsbSerialPort;
-import com.physicaloid.lib.Physicaloid;
+//import com.physicaloid.lib.Physicaloid;
 
 import java.io.ByteArrayOutputStream;
 //import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.zip.Deflater;
 import java.io.IOException;
 import org.json.JSONObject;
 import org.json.JSONException;
-import java.util.Base64;
+import android.util.Base64;
 
 
 public class CommandInterfaceESP32 {
@@ -684,7 +684,7 @@ public class CommandInterfaceESP32 {
         byte[] c = new byte[arr1.length + arr2.length];
 
         System.arraycopy(arr1, 0, c, 0, arr1.length);
-        System.arraycopy(arr2, 0, c, arr1.length + 0, arr2.length);
+        System.arraycopy(arr2, 0, c, arr1.length, arr2.length);
         return c;
     }
 
@@ -695,7 +695,7 @@ public class CommandInterfaceESP32 {
 
         byte[] c = new byte[length];
 
-        System.arraycopy(arr1, 0 + pos, c, 0, length);
+        System.arraycopy(arr1, pos, c, 0, length);
         return c;
     }
 
@@ -774,7 +774,7 @@ public class CommandInterfaceESP32 {
     }
 
     private int _bytearray_to_int(byte i, byte j, byte k, byte l) {
-        return ((int)i | (int)(j << 8) | (int)(k << 16) | (int)(l << 24));
+        return ((int)i | (j << 8) | (k << 16) | (l << 24));
     }
 
 
@@ -889,7 +889,7 @@ public class CommandInterfaceESP32 {
         // System.out.println("params:" +printHex(pkt));
         sendCommand((byte) ESP_MEM_END, pkt, 0, 3000);
     }
-    public class StubFlasher {
+    public static class StubFlasher {
         private byte[] text;
         private int text_start;
         private int entry;
@@ -903,11 +903,11 @@ public class CommandInterfaceESP32 {
             try {
                 JSONObject stub = new JSONObject(json_string);
                 byte[] textString = ((String) stub.get("text")).getBytes();
-                this.text = Base64.getDecoder().decode(textString);
+                this.text = Base64.decode(textString, Base64.DEFAULT);
                 this.text_start = (int) stub.get("text_start");
                 this.entry = (int) stub.get("entry");
                 byte[] dataString = ((String) stub.get("data")).getBytes();
-                this.data = Base64.getDecoder().decode(dataString);
+                this.data = Base64.decode(dataString, Base64.DEFAULT);
                 this.data_start = (int) stub.get("data_start");
                 this.bss_start = (int) stub.get("bss_start");//
             } catch (JSONException e) {

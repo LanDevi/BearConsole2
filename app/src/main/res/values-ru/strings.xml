@@ -5,11 +5,8 @@
     <!-- Menu -->
     <string name="help">Помощь</string>
     <string name="about">О приложении</string>
-    <string name="action_settings">Настройки приложения</string>
-    <string name="bluetooth_device">Устройство Bluetooth</string>
 
     <!-- Screen altimeter config-->
-    <string name="altimeter_config">Конфигурации альтиметра</string>
     <!-- AltimeterConfigActivity Spinners -->
     <!-- Config tab1 tooltips -->
 
@@ -17,7 +14,6 @@
     <!-- Config tab3 -->
     <!-- Config tab4-->
     <!-- Main Screen -->
-    <string name="reset_settings">Сброс\nнастроек</string>
 
     <!--connection screen -->
 
@@ -26,11 +22,10 @@
     <!-- bluetooth messages -->
 
     <!-- main screen msg-->
-    <string name="MS_msg1">Соединение...</string>
+    <string name="MS_msg1">Соединение…</string>
     <string name="MS_msg2">Пожалуйста подождите!!!</string>
 
     <!--Flight list screen -->
-    <string name="Flight_list">Перечень полётов</string>
 
     <!-- About screen -->
     <string name="about_screen">О приложении</string>
@@ -43,7 +38,6 @@
 
     <!-- flight views screen -->
     <!-- Application preference screen-->
-    <string name="titre_application_pref">Настройки приложения</string>
 
 
     <!-- Config-->
@@ -53,11 +47,10 @@
 
 
     <!-- Status -->
-    <string name="status">Статус</string>
 
 
     <!-- flash firmware -->
-    <string name="msg10">Прошивка...</string>
+    <string name="msg10">Прошивка…</string>
     <string name="msg11">Пожалуйста, подождите!!!</string>
     <string name="msg12">Загрузка: </string>
     <string name="msg13">Невозможно открыть</string>
@@ -70,9 +63,6 @@
     <string name="recover_firmware">выбор прошивки</string>
     <string name="flash_firmware">Прошить</string>
     <string name="select_altimeter_model">Выберите модель Вашего альтиметра:</string>
-    <string name="after_complete_upload">После окончания загрузки Вы сможете прошить устройство</string>
-    <string name="detect_firmware">Определить версию прошивки</string>
-    <string name="msg_detect_firmware">Попытка определить версию прошивки!!!</string>
 
     <!--- other -->
     <string name="main_screen_actity">Отмена</string>
@@ -83,24 +73,14 @@
     <!--curves name -->
 
 
-    <string name="select_bluetooth_device">Выбрать устройство Bluetooth</string>
-    <string name="telemetry_screen">Телеметрия</string>
-    <string name="status_screen">Статус</string>
-
-
     <!--telemetry module config -->
     <string name="chip_has_been_init">Chip has been initiated:</string>
-    <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
+    <string name="flash_firmware_msg">This will allows you to flash the chair pcb firmware to make it up-to-date. You will need program PCB and USB on-the-go adapter to connect  the board to your device. For help open the help file from the top right menu.</string>
     <string name="flash_firmware_title">Flash firmware</string>
     <string name="flash_firmware_ok">OK</string>
-    <string name="firmware_version_not_detected">Firmware version detected: </string>
-    <string name="_3dr_settings">3DR settings...</string>
-    <string name="bt_settings">BT settings...</string>
-    <string name="share">Share</string>
 
     <!-- GPS -->
     <string name="firmware">Firmware:</string>
     <string name="flash_speed_baud">Flash speed(Baud):</string>
-    <string name="firmware_info">Firmware info</string>
     <string name="flash_nfirmware">Flash\nfirmware</string>
 </resources>

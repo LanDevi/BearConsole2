@@ -4,11 +4,8 @@
     <!-- Menu -->
     <string name="help">Yardım</string>
     <string name="about">Hakkında</string>
-    <string name="action_settings">Uygulama Ayarları</string>
-    <string name="bluetooth_device">Bluetooth Cihazlar</string>
 
     <!-- Screenaltimeterconfig-->
-    <string name="altimeter_config">Altimetre Ayarları</string>
     <!-- AltimeterConfigActivitySpinners -->
     <!-- Config tab1 tooltips -->
 
@@ -16,7 +13,6 @@
     <!-- Config tab3 -->
     <!-- Config tab4-->
     <!-- Main Screen -->
-    <string name="reset_settings">Ayarları\nSıfırla</string>
 
     <!--connectionscreen -->
 
@@ -25,11 +21,10 @@
     <!-- bluetoothmessages -->
 
     <!-- main screenmsg-->
-    <string name="MS_msg1">Bağlanıyor...</string>
+    <string name="MS_msg1">Bağlanıyor…</string>
     <string name="MS_msg2">Lütfen Bekleyin!!!</string>
 
     <!--Flight listscreen -->
-    <string name="Flight_list">Uçuş Listesi</string>
 
     <!-- Aboutscreen -->
     <string name="about_screen">Hakkında</string>
@@ -42,7 +37,6 @@
 
     <!-- flightviewsscreen -->
     <!-- Application preferencescreen-->
-    <string name="titre_application_pref">Uygulama Ayarları</string>
 
 
     <!-- Config-->
@@ -51,10 +45,9 @@
 
 
     <!-- Status -->
-    <string name="status">Durum</string>
 
     <!-- flashfirmware -->
-    <string name="msg10">Yazılım Atılıyor...</string>
+    <string name="msg10">Yazılım Atılıyor…</string>
     <string name="msg11">Lütfen Bekleyin!!!</string>
     <string name="msg12">Yükle: </string>
     <string name="msg13">Açılamıyor</string>
@@ -67,9 +60,6 @@
     <string name="recover_firmware">Yazılımı Kurtar</string>
     <string name="flash_firmware">Yazılım At</string>
     <string name="select_altimeter_model">Altimetre Modelinizi Seçiniz:</string>
-    <string name="after_complete_upload">Yükleme bittiktan sonra gerçek yazılımı atabilirsiniz</string>
-    <string name="detect_firmware">Yazılımı Belirle</string>
-    <string name="msg_detect_firmware">Yazılım Belirlenmeye Çalışılıyor!!!</string>
 
     <!--- other -->
     <string name="main_screen_actity">İptal</string>
@@ -79,23 +69,14 @@
     <!--curves name -->
 
 
-    <string name="select_bluetooth_device">Bluetooth Cihazını Seçiniz</string>
-    <string name="telemetry_screen">Telemetri</string>
-    <string name="status_screen">Durum</string>
-
     <!--telemetry module config -->
     <string name="chip_has_been_init">Chip has been initiated:</string>
-    <string name="flash_firmware_msg">This will allows you to flash your altimeter firmware to make sure it is compatible with this application. You will need a ttl cable and an adaptator to connect your altimeter board to your phone. Please look at the on line help</string>
+    <string name="flash_firmware_msg">This will allows you to flash the chair pcb firmware to make it up-to-date. You will need program PCB and USB on-the-go adapter to connect  the board to your device. For help open the help file from the top right menu.</string>
     <string name="flash_firmware_title">Flash firmware</string>
     <string name="flash_firmware_ok">OK</string>
-    <string name="firmware_version_not_detected">Firmware version detected: </string>
-    <string name="_3dr_settings">3DR settings...</string>
-    <string name="bt_settings">BT settings...</string>
-    <string name="share">Share</string>
 
     <!-- GPS -->
     <string name="firmware">Firmware:</string>
     <string name="flash_speed_baud">Flash speed(Baud):</string>
-    <string name="firmware_info">Firmware info</string>
     <string name="flash_nfirmware">Flash\nfirmware</string>
 </resources>
