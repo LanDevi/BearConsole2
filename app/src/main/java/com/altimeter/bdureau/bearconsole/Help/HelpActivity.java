@@ -11,7 +11,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
-import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+//import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.R;
 
 //import java.util.Locale;
@@ -36,7 +36,7 @@ public class HelpActivity extends AppCompatActivity {
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
 
         setContentView(R.layout.activity_help);
-        webView = (WebView) findViewById(R.id.webView);
+        webView = findViewById(R.id.webView);
 
         WebSettings webSetting = webView.getSettings();
 
@@ -71,7 +71,7 @@ public class HelpActivity extends AppCompatActivity {
             webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
         //}
 
-        btnDismiss = (Button) findViewById(R.id.butClose);
+        btnDismiss = findViewById(R.id.butClose);
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class HelpActivity extends AppCompatActivity {
         });
     }
 
-    private class WebViewClient extends android.webkit.WebViewClient {
+    private static class WebViewClient extends android.webkit.WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return super.shouldOverrideUrlLoading(view, url);

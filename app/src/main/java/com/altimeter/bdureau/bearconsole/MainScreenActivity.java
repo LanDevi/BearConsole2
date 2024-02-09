@@ -4,69 +4,38 @@ package com.altimeter.bdureau.bearconsole;
  * @author: boris.dureau@neuf.fr
  **/
 
-//import android.app.AlertDialog;
-//import android.app.PendingIntent;
-//import android.content.BroadcastReceiver;
-//import android.content.Context;
-//import android.content.Context;
-//import android.content.DialogInterface;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
-//import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-//import android.net.Uri;
-//import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
-//import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-//import android.widget.Toast;
 
 import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
-//import com.altimeter.bdureau.bearconsole.Flight.FlightListActivity;
-//import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
-//import com.altimeter.bdureau.bearconsole.config.AltimeterTabConfigActivity;
-//import com.altimeter.bdureau.bearconsole.config.AppTabConfigActivity;
 import com.altimeter.bdureau.bearconsole.Help.AboutActivity;
-//import com.altimeter.bdureau.bearconsole.Help.HelpActivity;
-//import com.altimeter.bdureau.bearconsole.config.ConfigModules.Config3DR;
-//import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigBT;
-//import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLoraE220;
-//import com.altimeter.bdureau.bearconsole.config.ConfigModules.ConfigLoraE32;
-//import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
-//import com.altimeter.bdureau.bearconsole.connection.SearchBluetooth;
-//import com.altimeter.bdureau.bearconsole.connection.TestConnection;
-//import com.altimeter.bdureau.bearconsole.telemetry.AltimeterStatusTabActivity;
-//import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackGoogleMap;
-//import com.altimeter.bdureau.bearconsole.telemetry.RocketTrackOpenMap;
-//import com.altimeter.bdureau.bearconsole.telemetry.TelemetryTabActivity;
 import com.altimeter.bdureau.bearconsole.Flash.TerminalApplication;
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.HashMap;
+import java.util.Iterator;
 
-//import java.io.IOException;
-//import java.util.HashMap;
-//import java.util.Iterator;
-//import java.util.Map;
-//import java.util.Set;
 
 public class MainScreenActivity extends AppCompatActivity {
-//    public String TAG = "MainScreenActivity";
-//    String address = null;
-    //CardView btnAltiSettings, btnReadFlights, btnConnectDisconnect, btnContinuityOnOff, btnReset;
-    CardView btnTerminal, btnFlashFirmware, btnInfo, btnTest;
+    CardView btnFlashFirmware;
+    CardView btnInfo;
+    CardView btnTest;
 
-    ImageView image_terminal, image_flash, image_info;
-    TextView text_status, text_flash, text_info;
+    ImageView image_flash;
+    ImageView image_info;
+    TextView text_flash, text_info;
 
     UsbManager usbManager;
 //    UsbDevice device;
@@ -142,14 +111,14 @@ public class MainScreenActivity extends AppCompatActivity {
         //btnAltiSettings = (CardView) findViewById(R.id.settings_card);
         //btnReadFlights = (CardView) findViewById(R.id.flights_card);
         //btnTelemetry = (CardView) findViewById(R.id.telemetry_card);
-        btnTerminal = (CardView) findViewById(R.id.teminal_card);
-        btnFlashFirmware = (CardView) findViewById(R.id.flash_card);
+        //btnTerminal = (CardView) findViewById(R.id.terminal_card);
+        btnFlashFirmware = findViewById(R.id.flash_card);
         //btnConnectDisconnect = (CardView) findViewById(R.id.connect_card);
         //btnContinuityOnOff = (CardView) findViewById(R.id.continuity_card);
         //btnReset = (CardView) findViewById(R.id.reset_card);
         //btnTrack = (CardView) findViewById(R.id.track_card);
-        btnInfo = (CardView) findViewById(R.id.info_card);
-        btnTest = (CardView) findViewById(R.id.test_card);
+        btnInfo = findViewById(R.id.info_card);
+        btnTest = findViewById(R.id.test_card);
 
         // images
         //image_settings = (ImageView) findViewById(R.id.image_settings);
@@ -157,10 +126,10 @@ public class MainScreenActivity extends AppCompatActivity {
         //image_telemetry = (ImageView) findViewById(R.id.image_telemetry);
         //image_continuity = (ImageView) findViewById(R.id.image_continuity);
         //image_reset = (ImageView) findViewById(R.id.image_reset);
-        image_terminal = (ImageView) findViewById(R.id.image_terminal);
+        //image_terminal = (ImageView) findViewById(R.id.image_terminal);
         //image_track = (ImageView) findViewById(R.id.image_status);
-        image_flash = (ImageView) findViewById(R.id.image_flash);
-        image_info = (ImageView) findViewById(R.id.image_info);
+        image_flash = findViewById(R.id.image_flash);
+        image_info = findViewById(R.id.image_info);
         //image_connect = (ImageView) findViewById(R.id.image_connect);
 
         // text
@@ -169,10 +138,10 @@ public class MainScreenActivity extends AppCompatActivity {
         //text_telemetry = (TextView) findViewById(R.id.text_telemetry);
         //text_continuity = (TextView) findViewById(R.id.text_continuity);
         //text_reset = (TextView) findViewById(R.id.text_reset);
-        text_status = (TextView) findViewById(R.id.text_status);
+        //text_status = (TextView) findViewById(R.id.text_status);
         //text_track = (TextView) findViewById(R.id.text_track);
-        text_flash = (TextView) findViewById(R.id.text_flash);
-        text_info = (TextView) findViewById(R.id.text_info);
+        text_flash = findViewById(R.id.text_flash);
+        text_info = findViewById(R.id.text_info);
         //text_connect = (TextView) findViewById(R.id.text_connect);
 
 //        if (myBT.getConnected()) {
@@ -195,6 +164,13 @@ public class MainScreenActivity extends AppCompatActivity {
         //    }
         //});
 //
+        PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_MUTABLE);
+        HashMap<String,UsbDevice> list = usbManager.getDeviceList();
+        Iterator<UsbDevice> iterator = list.values().iterator();
+        if(iterator.hasNext()){
+            UsbDevice device = iterator.next();
+            usbManager.requestPermission(device, permissionIntent);
+        }
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,13 +221,13 @@ public class MainScreenActivity extends AppCompatActivity {
         //    }
         //});
 
-        btnTerminal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
-                startActivity(i);
-            }
-        });
+//        btnTerminal.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(MainScreenActivity.this, AboutActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
         //btnTrack.setOnClickListener(new View.OnClickListener() {
         //    @Override
@@ -390,7 +366,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         //setEnabledCard(false, btnReset, image_reset, text_reset);
 
-        setEnabledCard(false, btnTerminal, image_terminal, text_status);
+        //setEnabledCard(false, btnTerminal, image_terminal, text_status);
 
         // now enable or disable the menu entries by invalidating it
         invalidateOptionsMenu();
@@ -503,102 +479,6 @@ public class MainScreenActivity extends AppCompatActivity {
     //private void Disconnect() {
     //    myBT.Disconnect();
     //}
-
-
-    private boolean readConfig() {
-        // ask for config
-        boolean success = false;
-        //if (myBT.getConnected()) {
-//
-        //    Log.d("MainScreen", "Retreiving altimeter config...");
-        //    myBT.setDataReady(false);
-        //    myBT.flush();
-        //    myBT.clearInput();
-        //    //switch off the main loop before sending the config
-        //    myBT.write("m0;".toString());
-        //    Log.d("MainScreen", "after m0");
-        //    //wait for the result to come back
-        //    try {
-        //        while (myBT.getInputStream().available() <= 0) ;
-        //    } catch (IOException e) {
-//
-        //    }
-        //    Log.d("MainScreen", "before myMessage");
-        //    String myMessage = "";
-        //    myMessage = myBT.ReadResult(3000);
-        //    Log.d("MainScreen", myMessage);
-        //    if (myMessage.equals("OK")) {
-        //        myBT.setDataReady(false);
-        //        myBT.flush();
-        //        myBT.clearInput();
-        //        myBT.write("b;".toString());
-        //        myBT.flush();
-//
-        //        //get the results
-        //        //wait for the result to come back
-        //        try {
-        //            while (myBT.getInputStream().available() <= 0) ;
-        //        } catch (IOException e) {
-//
-        //        }
-        //        myMessage = myBT.ReadResult(3000);
-        //        Log.d("MainScreen", myMessage);
-        //        //reading the config
-        //        if (myMessage.equals("start alticonfig end")) {
-        //            try {
-        //                AltiCfg = myBT.getAltiConfigData();
-        //                success = true;
-        //            } catch (Exception e) {
-        //                //  msg("pb ready data");
-        //            }
-        //        } else {
-        //            // msg("data not ready");
-        //            //try again
-        //            myBT.setDataReady(false);
-        //            myBT.flush();
-        //            myBT.clearInput();
-        //            myBT.write("b;".toString());
-        //            myBT.flush();
-        //            //get the results
-        //            //wait for the result to come back
-        //            try {
-        //                while (myBT.getInputStream().available() <= 0) ;
-        //            } catch (IOException e) {
-//
-        //            }
-        //            myMessage = myBT.ReadResult(3000);
-        //            //reading the config
-        //            if (myMessage.equals("start alticonfig end")) {
-        //                try {
-        //                    AltiCfg = myBT.getAltiConfigData();
-        //                    success = true;
-        //                } catch (Exception e) {
-        //                    //  msg("pb ready data");
-        //                }
-        //            }
-        //        }
-        //        myBT.setDataReady(false);
-        //        myBT.flush();
-        //        myBT.clearInput();
-        //        //switch on the main loop before sending the config
-        //        myBT.write("m1;".toString());
-//
-        //        //wait for the result to come back
-        //        try {
-        //            while (myBT.getInputStream().available() <= 0) ;
-        //        } catch (IOException e) {
-//
-        //        }
-        //        myMessage = myBT.ReadResult(3000);
-        //        if (myMessage.equals("OK")) {
-        //            myBT.flush();
-        //        }
-        //    }
-        //} else {
-        //    Log.d("MainScreen", "Not connected");
-        //}
-        return success;
-    }
 
 
     @Override

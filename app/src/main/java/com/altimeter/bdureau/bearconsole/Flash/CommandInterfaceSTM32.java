@@ -167,10 +167,10 @@ public class CommandInterfaceSTM32 {
         cmd[0]=0x00;
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
-            int len =(int)buf[0];
+            int len = buf[0];
 
             recv(buf, 1);
-            version = (int)buf[0];
+            version = buf[0];
             recv(buf, len);
 
             mUpCallback.onInfo("version:" + version + "\n");
@@ -188,7 +188,7 @@ public class CommandInterfaceSTM32 {
         cmd[0]=0x01;
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
-            version = (int)buf[0];
+            version = buf[0];
             _wait_for_ack("0x01 end",500);
         }
         return version;
@@ -201,11 +201,11 @@ public class CommandInterfaceSTM32 {
         cmd[0]=0x02;
         if (cmdGeneric(cmd)==1) {
             recv(buf, 1);
-            int len = (int)buf[0];
+            int len = buf[0];
             //tvAppend(tvRead, "id all:" + toHexStr(buf, len) + "\n");
             recv(buf, len+1);
             //tvAppend(tvRead, "id all:" + toHexStr(buf, len));
-            id = (int)buf[0];
+            id = buf[0];
             _wait_for_ack("0x02 end",500);
         }
         return buf;
@@ -274,7 +274,7 @@ public class CommandInterfaceSTM32 {
 
             mPhysicaloid.write(new byte[]{ crc });
             _wait_for_ack("0x31 programming failed " +
-                    toHexStr(new byte[]{(byte) crc }, 1) + " lng: " +
+                    toHexStr(new byte[]{crc}, 1) + " lng: " +
                     toHexStr(new byte[]{(byte) lng }, 1),200);
             return 1;
         }else{
@@ -370,7 +370,7 @@ public class CommandInterfaceSTM32 {
 
         while (lng > 256) {
             byte[] buf = new byte[256];
-            System.arraycopy(data, 0 + offs, buf, 0, 256);
+            System.arraycopy(data, offs, buf, 0, 256);
             int ret = cmdWriteMemory(addr, buf);
             if(ret !=1)
                 mUpCallback.onInfo("error writing to mem:" + lng + "\n");
@@ -384,7 +384,7 @@ public class CommandInterfaceSTM32 {
             mUpCallback.onUploading((offs*100)/tot);
         }
         byte[] buf2 = new byte[256];
-        if (lng >= 0) System.arraycopy(data, 0 + offs, buf2, 0, lng);
+        if (lng >= 0) System.arraycopy(data, offs, buf2, 0, lng);
         for (int i =lng; i< 256; i++) {
             buf2[i]= (byte)0xFF;
         }

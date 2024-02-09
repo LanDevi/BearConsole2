@@ -136,7 +136,7 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash_firmware);
 
-        spinnerFirmware = (Spinner) findViewById(R.id.spinnerFirmware);
+        spinnerFirmware = findViewById(R.id.spinnerFirmware);
         itemsFirmwares = new String[]{
                 "ESP32"
         };
@@ -147,9 +147,9 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
         spinnerFirmware.setSelection(0);
 
 
-        btFlash = (Button) findViewById(R.id.btFlash);
-        tvRead = (TextView) findViewById(R.id.tvRead);
-        imageAlti = (ImageView) findViewById(R.id.imageAlti);
+        btFlash = findViewById(R.id.btFlash);
+        tvRead = findViewById(R.id.tvRead);
+        imageAlti = findViewById(R.id.imageAlti);
 
 
         //mPhysicaloid = new Physicaloid(this);
@@ -417,6 +417,10 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
 //    }
 
     public void onClickFlash(View v) {
+        if(connection == null){
+            tvRead.setText("USB not connected or permission was not granted!!!\n");
+            return;
+        }
 //        String firmwareFileName;
 //
 //        firmwareFileName = ASSET_FILE_NAME_ALTIMULTI;
@@ -469,15 +473,58 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
 //            recorverFirmware = false;
 //            new UploadSTM32Asyc().execute();
 //        } else
-//        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("ESP32")) {
-        tvRead.setText("Loading ESP32 firmware\n");
-//        recorverFirmware = false;
-        new UploadESP32Asyc().execute();
-//        }
+        if (itemsFirmwares[(int) spinnerFirmware.getSelectedItemId()].equals("ESP32")) {
+            tvRead.setText("Loading ESP32 firmware\n");
+            //new UploadESP32Asyc().execute();
+            uploadEsp32Thread();
+        }
+
 
 
     }
 
+
+    private void uploadEsp32Thread(){
+        //onPreExecute
+        CreateFlashingDialog();
+
+        //Background and post execute
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                doInBackground();
+                onPostExecute();
+            }
+
+            private void doInBackground() {
+                String[] firmwareFileName = new String[4];
+//            if (!recorverFirmware) {
+                firmwareFileName[0] = ASSET_FILE_NAME_ALTIESP32_FILE1;
+                firmwareFileName[1] = ASSET_FILE_NAME_ALTIESP32_FILE2;
+                firmwareFileName[2] = ASSET_FILE_NAME_ALTIESP32_FILE3;
+                firmwareFileName[3] = ASSET_FILE_NAME_ALTIESP32_FILE4;
+                uploadESP32(firmwareFileName, mUploadSTM32Callback);
+            }
+            private void onPostExecute(){
+                alert.dismiss();
+            }
+        }).start();
+    }
+
+    private void CreateFlashingDialog() {
+        builder = new AlertDialog.Builder(FlashFirmware.this);
+        //Flashing firmware...
+        builder.setMessage(getResources().getString(R.string.msg10))
+                .setTitle(getResources().getString(R.string.msg11))
+                .setCancelable(false)
+                .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
 //    private class DetectAsyc extends AsyncTask<Void, Void, Void>  // UI thread
 //    {
 //        @Override
@@ -669,18 +716,7 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(FlashFirmware.this);
-            //Flashing firmware...
-            builder.setMessage(getResources().getString(R.string.msg10))
-                    .setTitle(getResources().getString(R.string.msg11))
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.firmware_cancel), new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, final int id) {
-                            dialog.cancel();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
+            CreateFlashingDialog();
         }
 
         @Override
@@ -952,7 +988,7 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
             for(File file : contents){
                 String fileName = file.getName();
                 int fileNumber = fileName.charAt(0) - '0' - 1;
-                if(fileNumber < 4){
+                if(fileNumber < 4 && fileNumber >= 0){//TODO: Test if this catches files starting with special character.
                     files[fileNumber] = readOwnedFile(storageLocation + "/" + fileName);
                     tvAppend(tvRead,fileName + " size: " + files[fileNumber].length + "\n");
                 }
@@ -963,8 +999,8 @@ private static final String ASSET_FILE_NAME_ESP32_STUB = "firmwares/ESP32/stub_f
         }
     }
 
-    private static int getVersion(byte[] downloadTemp) {//will have to be changed to a json read
-        return (downloadTemp[0] - '0') * 1000 +
+    private static int getVersion(byte[] downloadTemp) {//TODO: Has to change when the server document is updated to Json.
+        return  (downloadTemp[0] - '0') * 1000 +
                 (downloadTemp[1] - '0') * 100 +
                 (downloadTemp[2] - '0') * 10 +
                 (downloadTemp[3] - '0');

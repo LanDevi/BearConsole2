@@ -1,6 +1,6 @@
 package com.altimeter.bdureau.bearconsole.Flash;
 
-import com.physicaloid.lib.Physicaloid;
+//import com.physicaloid.lib.Physicaloid;
 
 //public class FirmwareInfo {
     //UploadSTM32CallBack mUpCallback;

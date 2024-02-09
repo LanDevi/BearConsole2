@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.altimeter.bdureau.bearconsole.ConsoleApplication;
+//import com.altimeter.bdureau.bearconsole.ConsoleApplication;
 import com.altimeter.bdureau.bearconsole.Flash.CommandInterfaceESP32;
 //import com.altimeter.bdureau.bearconsole.Flash.FlashFirmware;
 import com.altimeter.bdureau.bearconsole.Flash.UploadSTM32CallBack;
@@ -40,7 +40,19 @@ public class TerminalApplication extends AppCompatActivity {
 
 
     private boolean startedTerminal = false;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        startedTerminal = false;
+        close();
 
+    }
+    private void close() {
+        try {
+            if(port != null)
+                port.close();
+        } catch (IOException e){}
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,8 +60,8 @@ public class TerminalApplication extends AppCompatActivity {
 //        myBT = (ConsoleApplication) getApplication();
         setContentView(R.layout.activity_terminal);
 
-        btnDismiss = (Button)findViewById(R.id.butDismiss);
-        tvRead = (TextView) findViewById(R.id.tvRead);
+        btnDismiss = findViewById(R.id.butDismiss);
+        tvRead = findViewById(R.id.tvRead);
         btnDismiss.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -104,16 +116,36 @@ public class TerminalApplication extends AppCompatActivity {
             terminalAddText("Terminal stopping!\n");
             return;
         }
-        startedTerminal = true;
-        tvRead.setText("Terminal starting" + "\n");
 
-        try {
-            port.setParameters(115200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
-        } catch (IOException e){}
-
-        new TerminalESP32Asyc().execute();
+        if(connection != null){
+            startedTerminal = true;
+            tvRead.setText("Terminal starting\n");
+//            new TerminalESP32Asyc().execute();
+            terminalESP32Thread();
+        }
+        else
+            tvRead.setText("USB not connected or permission was not granted!!!\n");
     }
+    private void terminalESP32Thread(){
+        //onPreExecute
 
+        //Background and post execute
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                doInBackground();
+                onPostExecute();
+            }
+
+            private void doInBackground() {
+                while(startedTerminal)
+                    terminalESP32(mUploadSTM32Callback);
+            }
+            private void onPostExecute(){
+
+            }
+        }).start();
+    }
     private class TerminalESP32Asyc extends AsyncTask<Void, Void, Void>  // UI thread
     {
         @Override
